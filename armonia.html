@@ -148,11 +148,27 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 
 @keyframes cardIn{from{opacity:0;transform:translateY(7px) scale(.99)}to{opacity:1;transform:none}}
 .card-in{animation:cardIn .22s ease}
+
+/* ── HOME BTN / LEVELS ── */
+.home-btn{background:none;border:none;padding:0;color:var(--txt-mute);font-size:.72rem;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:color .14s;margin-bottom:20px;display:inline-flex;align-items:center;gap:5px;text-decoration:none}
+.home-btn:hover{color:var(--txt-dim)}
+.lvl-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lvl-card{background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:13px 14px;cursor:pointer;transition:all .14s;user-select:none;display:flex;align-items:flex-start;gap:11px}
+.lvl-card:hover{border-color:var(--acc-dim)}
+.lvl-card.on{background:var(--acc-glow);border-color:var(--acc-dim)}
+.lvl-icon{font-size:1.4rem;line-height:1;flex-shrink:0;margin-top:1px}
+.lvl-name{font-size:.82rem;font-weight:700;color:var(--txt-dim);margin-bottom:3px}
+.lvl-card.on .lvl-name{color:var(--txt)}
+.lvl-desc{font-size:.61rem;color:var(--txt-mute);line-height:1.45}
+.lvl-card.on .lvl-desc{color:var(--txt-dim)}
+.manual-cfg{overflow:hidden}
+.manual-cfg.hidden{display:none}
+
 @media(max-width:480px){
   .logo{font-size:2rem}.card-q{font-size:1.3rem}
   .ans-grid{grid-template-columns:1fr}.res-score{font-size:4rem}
   .mod-grid{grid-template-columns:1fr}.key-grid{grid-template-columns:repeat(4,1fr)}
-  .piano-grid{grid-template-columns:1fr}
+  .piano-grid{grid-template-columns:1fr}.lvl-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -161,19 +177,26 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 
 <!-- ═══ SETTINGS ═══ -->
 <div class="screen active" id="screen-settings">
+  <a class="home-btn" href="index.html">← Inicio</a>
   <h1 class="logo"><span>Armonía</span></h1>
   <p class="tagline">Flashcards · Desde Cero</p>
   <div class="sec">
-    <div class="sec-label">Módulos a practicar</div>
-    <div class="mod-grid" id="mod-grid"></div>
+    <div class="sec-label">Nivel de dificultad</div>
+    <div class="lvl-grid" id="lvl-grid"></div>
   </div>
-  <div class="sec">
-    <div class="sec-label">Tonalidades / Raíces</div>
-    <div class="key-grid" id="key-grid"></div>
-  </div>
-  <div class="sec">
-    <div class="sec-label">Número de preguntas</div>
-    <div class="cnt-row" id="cnt-row"></div>
+  <div class="manual-cfg hidden" id="manual-cfg">
+    <div class="sec">
+      <div class="sec-label">Módulos a practicar</div>
+      <div class="mod-grid" id="mod-grid"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-label">Tonalidades / Raíces</div>
+      <div class="key-grid" id="key-grid"></div>
+    </div>
+    <div class="sec">
+      <div class="sec-label">Número de preguntas</div>
+      <div class="cnt-row" id="cnt-row"></div>
+    </div>
   </div>
   <button class="start-btn" onclick="startGame()">Comenzar →</button>
   <button class="theory-btn" onclick="showScreen('theory')">
@@ -569,13 +592,29 @@ const MODULES = [
 const ALL_KEYS = Object.keys(MAJOR_SCALES);
 const COUNTS = [10,20,30,50];
 
+const LEVELS = [
+  {id:'principiante', icon:'🌱', name:'Principiante',
+   desc:'Tríadas mayor/menor · Do Sol Re Fa · 10 preguntas',
+   mods:['triadNotes'], keys:['Do','Sol','Re','Fa'], count:10},
+  {id:'intermedio', icon:'🎯', name:'Intermedio',
+   desc:'Tríadas + Diatónicos · 6 tonalidades · 20 preguntas',
+   mods:['triadNotes','triadQual','diatonic'], keys:['Do','Sol','Re','La','Mi','Fa'], count:20},
+  {id:'avanzado', icon:'🔥', name:'Avanzado',
+   desc:'Todos los módulos · 12 tonalidades · 30 preguntas',
+   mods:['triadNotes','triadQual','diatonic','seventh','progression'], keys:null, count:30},
+  {id:'personalizado', icon:'⚙️', name:'Personalizado',
+   desc:'Elegí módulos, tonalidades y cantidad manualmente',
+   mods:null, keys:null, count:null},
+];
+let currentLevel = 'principiante';
+
 // ═══════════════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════════════
 let ST = {
-  mods:['triadNotes','diatonic'],
-  keys:['Do','Sol','Re','La','Mi','Fa'],
-  count:20,
+  mods:['triadNotes'],
+  keys:['Do','Sol','Re','Fa'],
+  count:10,
   qs:[],idx:0,ok:0,err:0,streak:0,maxStreak:0,answered:false
 };
 
@@ -728,7 +767,30 @@ function showResults(){
 // ═══════════════════════════════════════════════════════════
 // SETTINGS UI
 // ═══════════════════════════════════════════════════════════
+function selectLevel(id){
+  currentLevel=id;
+  const lvl=LEVELS.find(l=>l.id===id);
+  const manual=document.getElementById('manual-cfg');
+  if(id==='personalizado'){
+    manual.classList.remove('hidden');
+  } else {
+    manual.classList.add('hidden');
+    ST.mods=[...lvl.mods];
+    ST.keys=lvl.keys?[...lvl.keys]:[...ALL_KEYS];
+    ST.count=lvl.count;
+  }
+  document.querySelectorAll('.lvl-card').forEach(c=>c.classList.remove('on'));
+  document.querySelector(`.lvl-card[data-lvl="${id}"]`)?.classList.add('on');
+}
 function initSettings(){
+  document.getElementById('lvl-grid').innerHTML=LEVELS.map(l=>
+    `<div class="lvl-card${currentLevel===l.id?' on':''}" data-lvl="${l.id}" onclick="selectLevel('${l.id}')">
+      <div class="lvl-icon">${l.icon}</div>
+      <div><div class="lvl-name">${l.name}</div><div class="lvl-desc">${l.desc}</div></div>
+    </div>`).join('');
+  const manual=document.getElementById('manual-cfg');
+  if(currentLevel==='personalizado') manual.classList.remove('hidden');
+  else manual.classList.add('hidden');
   document.getElementById('mod-grid').innerHTML=MODULES.map(m=>
     `<div class="mod-card${ST.mods.includes(m.id)?' on':''}" style="--mc:${m.col}" onclick="toggleMod('${m.id}',this)">
       <div class="mod-name">${m.name}</div>
