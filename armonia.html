@@ -14,51 +14,47 @@
   --ok:#52c76e;--ok-bg:rgba(82,199,110,.12);
   --err:#e05a5a;--err-bg:rgba(224,90,90,.12);
   --bdr:rgba(255,255,255,.07);--card-bdr:rgba(124,111,232,.2);
+  --amber:#d4a843;--amber-dark:#a87e28;
 }
 html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'JetBrains Mono',monospace}
 body{min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;position:relative}
 body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(180deg,transparent 0,transparent 37px,rgba(255,255,255,.02) 37px,rgba(255,255,255,.02) 38px);pointer-events:none;z-index:0}
 body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.55) 100%);pointer-events:none;z-index:0}
-
 .app{position:relative;z-index:1;width:100%;max-width:680px;padding:36px 20px 64px}
-
 .screen{display:none}.screen.active{display:block}
 
 /* ── SETTINGS ── */
 .logo{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;text-align:center;letter-spacing:-.02em;margin-bottom:4px}
 .logo span{color:var(--acc);font-style:italic}
 .tagline{text-align:center;color:var(--txt-dim);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:36px}
-
 .sec{margin-bottom:24px}
 .sec-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;color:var(--acc);margin-bottom:11px;display:flex;align-items:center;gap:8px}
 .sec-label::after{content:'';flex:1;height:1px;background:var(--card-bdr)}
-
-/* module cards */
 .mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .mod-card{background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .14s;user-select:none;position:relative;overflow:hidden}
 .mod-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--mc,var(--acc))}
 .mod-card:hover{border-color:var(--acc-dim)}
 .mod-card.on{background:var(--acc-glow);border-color:var(--acc-dim)}
-.mod-card.on::before{background:var(--mc,var(--acc));opacity:1}
 .mod-name{font-size:.8rem;font-weight:700;color:var(--txt-dim);margin-bottom:2px}
 .mod-card.on .mod-name{color:var(--txt)}
 .mod-desc{font-size:.65rem;color:var(--txt-mute);line-height:1.4}
 .mod-card.on .mod-desc{color:var(--txt-dim)}
-
-/* key chips */
 .key-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
 .key-chip{background:var(--card);border:1px solid var(--bdr);border-radius:6px;padding:9px 4px;text-align:center;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--txt-dim);transition:all .14s;user-select:none}
 .key-chip:hover{border-color:var(--acc-dim);color:var(--txt)}
 .key-chip.on{background:var(--acc-glow);border-color:var(--acc);color:var(--acc)}
-
 .cnt-row{display:flex;gap:8px}
 .cnt-chip{flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:6px;padding:12px;text-align:center;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;color:var(--txt-dim);transition:all .14s;user-select:none}
 .cnt-chip:hover{border-color:var(--acc-dim);color:var(--txt)}
 .cnt-chip.on{background:var(--acc-glow);border-color:var(--acc);color:var(--acc)}
-
 .start-btn{width:100%;margin-top:8px;background:var(--acc);color:#f0ebe0;border:none;border-radius:8px;padding:15px;font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;letter-spacing:.02em;cursor:pointer;transition:all .15s}
 .start-btn:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(124,111,232,.35)}
 .start-btn:active{transform:none}
+.theory-btn{width:100%;margin-top:10px;background:transparent;border:1px solid var(--acc-dim);border-radius:8px;padding:13px 20px;font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--acc-dim);cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all .15s}
+.theory-btn:hover{border-color:var(--acc);color:var(--acc);background:var(--acc-glow)}
+.theory-btn-icon{font-size:1.1rem}
+.theory-btn-text{flex:1;text-align:center}
+.theory-btn-arrow{font-size:.9rem;opacity:.6}
 
 /* ── GAME ── */
 .game-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
@@ -66,10 +62,8 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .exit-btn:hover{border-color:var(--txt-dim);color:var(--txt)}
 .stat-row{display:flex;gap:14px;align-items:center;font-size:.78rem;color:var(--txt-dim)}
 .sv{color:var(--txt);font-weight:700}
-
 .prog-track{height:2px;background:var(--bdr);border-radius:1px;margin-bottom:26px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--acc-dim),var(--acc));border-radius:1px;transition:width .4s cubic-bezier(.4,0,.2,1)}
-
 .card{background:var(--card);border:1px solid var(--card-bdr);border-radius:13px;padding:36px 28px;margin-bottom:18px;text-align:center;position:relative;overflow:hidden;min-height:156px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--acc-dim),transparent)}
 .card-badge{font-size:.62rem;text-transform:uppercase;letter-spacing:.16em;margin-bottom:14px;padding:3px 10px;border-radius:20px;display:inline-block}
@@ -77,30 +71,22 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .card-q strong{font-weight:900;color:var(--acc)}
 .card-q em{font-style:italic}
 .card-q .note-block{display:block;font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--txt);margin:10px 0}
-
 .ans-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .ans-btn{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:16px 10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .14s;position:relative;min-height:62px}
 .ans-btn:hover:not(:disabled){border-color:var(--acc-dim);background:var(--acc-glow);transform:translateY(-1px)}
 .ans-btn:disabled{cursor:default;transform:none!important}
 .ans-kbd{font-size:.62rem;color:var(--txt-mute);background:rgba(255,255,255,.05);border-radius:3px;padding:2px 5px;flex-shrink:0}
 .ans-text{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--txt);text-align:center;line-height:1.3}
-.ans-text.lg{font-size:1.3rem}
-.ans-text.md{font-size:1rem}
-.ans-text.sm{font-size:.82rem}
-
+.ans-text.lg{font-size:1.3rem}.ans-text.md{font-size:1rem}.ans-text.sm{font-size:.82rem}
 .ans-btn.correct{border-color:var(--ok);background:var(--ok-bg);box-shadow:0 0 18px rgba(82,199,110,.12)}
-.ans-btn.correct .ans-text{color:var(--ok)}
-.ans-btn.correct .ans-kbd{opacity:.4}
+.ans-btn.correct .ans-text{color:var(--ok)}.ans-btn.correct .ans-kbd{opacity:.4}
 .ans-btn.wrong{border-color:var(--err);background:var(--err-bg)}
 .ans-btn.wrong .ans-text{color:var(--err)}
 .ans-btn.reveal{border-color:var(--ok);background:var(--ok-bg)}
 .ans-btn.reveal .ans-text{color:var(--ok)}
-
 .feedback{text-align:center;padding:10px;border-radius:6px;font-size:.82rem;margin-bottom:11px;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;min-height:36px;display:flex;align-items:center;justify-content:center;line-height:1.4}
 .feedback.show{opacity:1;transform:none}
-.feedback.ok{color:var(--ok)}
-.feedback.err{color:var(--err)}
-
+.feedback.ok{color:var(--ok)}.feedback.err{color:var(--err)}
 .next-btn{width:100%;background:transparent;border:1px solid var(--acc-dim);border-radius:8px;padding:13px;font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700;color:var(--acc);cursor:pointer;opacity:0;pointer-events:none;transition:all .2s}
 .next-btn.show{opacity:1;pointer-events:all}
 .next-btn:hover{background:var(--acc-glow)}
@@ -119,46 +105,55 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 .sec-btn:hover{border-color:var(--txt-dim);color:var(--txt)}
 .res-acts .start-btn{flex:1;margin-top:0}
 
+/* ── THEORY ── */
+.th-back{background:none;border:1px solid var(--bdr);border-radius:5px;padding:7px 12px;color:var(--txt-dim);font-size:.75rem;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .14s;margin-bottom:26px;display:inline-block}
+.th-back:hover{border-color:var(--txt-dim);color:var(--txt)}
+.th-page-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;margin-bottom:4px}
+.th-page-sub{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--txt-dim);margin-bottom:36px}
+.th-block{margin-bottom:28px;background:var(--card);border:1px solid var(--bdr);border-radius:14px;overflow:hidden}
+.th-block-head{padding:16px 22px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bdr)}
+.th-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.th-block-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--txt)}
+.th-body{padding:20px 22px}
+.th-p{color:var(--txt-dim);font-size:.85rem;line-height:1.78;margin-bottom:14px;font-family:system-ui,sans-serif}
+.th-p strong{color:var(--txt);font-weight:600}
+.th-p em{color:var(--acc);font-style:normal;font-weight:600}
+.th-rule{background:rgba(124,111,232,.08);border:1px solid rgba(124,111,232,.2);border-left:3px solid var(--acc);border-radius:0 7px 7px 0;padding:11px 15px;font-size:.82rem;color:var(--txt-dim);margin:14px 0;line-height:1.7;font-family:system-ui,sans-serif}
+.th-rule strong{color:var(--acc)}
+.th-rule em{font-style:normal;color:var(--txt)}
+.th-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:14px 0}
+.th-table th{text-align:left;padding:7px 10px;color:var(--acc);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--bdr);font-family:'JetBrains Mono',monospace}
+.th-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--txt-dim);font-family:system-ui,sans-serif;font-size:.82rem}
+.th-table td:first-child{color:var(--txt);font-weight:700;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.th-table tr:last-child td{border-bottom:none}
+.tag{display:inline-block;padding:2px 8px;border-radius:3px;font-size:.68rem;font-family:'JetBrains Mono',monospace}
+.tag-ok{background:rgba(82,199,110,.15);color:var(--ok)}
+.tag-acc{background:var(--acc-glow);color:var(--acc)}
+.tag-warn{background:rgba(232,112,64,.15);color:#e87040}
+.tag-dim{background:rgba(220,160,60,.15);color:#dca03c}
+
+/* Piano */
+.piano-section{margin:18px 0 8px;background:rgba(0,0,0,.25);border-radius:10px;padding:16px 12px}
+.piano-section-title{font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--txt-mute);margin-bottom:12px;font-family:'JetBrains Mono',monospace}
+.piano-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.piano-cell{background:rgba(0,0,0,.2);border-radius:8px;padding:10px}
+.piano-cell-name{font-size:.72rem;font-weight:700;color:var(--txt-dim);margin-bottom:8px;font-family:'JetBrains Mono',monospace;text-align:center}
+.piano-svg{width:100%;overflow:visible}
+.prog-flow{display:flex;align-items:center;gap:0;margin:16px 0;flex-wrap:wrap;gap:6px}
+.prog-chord{background:rgba(124,111,232,.1);border:1px solid var(--card-bdr);border-radius:8px;padding:10px 14px;text-align:center;flex:1;min-width:80px}
+.prog-chord-roman{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--acc-dim);margin-bottom:4px}
+.prog-chord-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--txt)}
+.prog-chord-fn{font-size:.62rem;color:var(--txt-mute);margin-top:3px;font-family:system-ui,sans-serif}
+.prog-arrow{color:var(--txt-mute);font-size:1rem;flex-shrink:0}
+
 @keyframes cardIn{from{opacity:0;transform:translateY(7px) scale(.99)}to{opacity:1;transform:none}}
 .card-in{animation:cardIn .22s ease}
-
 @media(max-width:480px){
   .logo{font-size:2rem}.card-q{font-size:1.3rem}
   .ans-grid{grid-template-columns:1fr}.res-score{font-size:4rem}
   .mod-grid{grid-template-columns:1fr}.key-grid{grid-template-columns:repeat(4,1fr)}
+  .piano-grid{grid-template-columns:1fr}
 }
-
-/* ── THEORY ── */
-.theory-link{display:block;text-align:center;margin-bottom:28px;color:var(--acc-dim);font-size:.78rem;cursor:pointer;letter-spacing:.06em;transition:color .14s;text-decoration:none}
-.theory-link:hover{color:var(--acc)}
-.th-back{background:none;border:1px solid var(--bdr);border-radius:5px;padding:6px 10px;color:var(--txt-dim);font-size:.72rem;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .14s;margin-bottom:28px;display:inline-block}
-.th-back:hover{border-color:var(--txt-dim);color:var(--txt)}
-.th-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;margin-bottom:4px}
-.th-sub{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--txt-dim);margin-bottom:36px}
-
-.th-block{margin-bottom:36px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
-.th-block-head{padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bdr)}
-.th-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.th-block-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--txt)}
-.th-block-body{padding:18px 20px}
-.th-p{color:var(--txt-dim);font-size:.85rem;line-height:1.75;margin-bottom:14px;font-family:system-ui,sans-serif}
-.th-p strong{color:var(--txt);font-weight:600}
-.th-p em{color:var(--acc);font-style:normal}
-
-.th-rule{background:rgba(124,111,232,.08);border:1px solid rgba(124,111,232,.2);border-radius:7px;padding:11px 15px;font-size:.8rem;color:var(--txt-dim);margin:12px 0;line-height:1.65;font-family:system-ui,sans-serif}
-.th-rule strong{color:var(--acc)}
-
-.th-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:14px 0}
-.th-table th{text-align:left;padding:6px 10px;color:var(--acc);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--bdr);font-family:'JetBrains Mono',monospace}
-.th-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--txt-dim);font-family:system-ui,sans-serif;font-size:.82rem}
-.th-table td:first-child{color:var(--txt);font-weight:600;font-family:'JetBrains Mono',monospace;white-space:nowrap}
-.th-table tr:last-child td{border-bottom:none}
-.th-table tr:hover td{background:rgba(255,255,255,.02)}
-.tag{display:inline-block;padding:1px 7px;border-radius:3px;font-size:.7rem;font-family:'JetBrains Mono',monospace}
-.tag-ok{background:rgba(82,199,110,.15);color:var(--ok)}
-.tag-acc{background:var(--acc-glow);color:var(--acc)}
-.tag-warn{background:rgba(232,112,64,.15);color:#e87040}
-.tag-red{background:rgba(232,104,104,.15);color:#e86868}
 </style>
 </head>
 <body>
@@ -168,24 +163,24 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
 <div class="screen active" id="screen-settings">
   <h1 class="logo"><span>Armonía</span></h1>
   <p class="tagline">Flashcards · Desde Cero</p>
-
   <div class="sec">
     <div class="sec-label">Módulos a practicar</div>
     <div class="mod-grid" id="mod-grid"></div>
   </div>
-
   <div class="sec">
     <div class="sec-label">Tonalidades / Raíces</div>
     <div class="key-grid" id="key-grid"></div>
   </div>
-
   <div class="sec">
     <div class="sec-label">Número de preguntas</div>
     <div class="cnt-row" id="cnt-row"></div>
   </div>
-
   <button class="start-btn" onclick="startGame()">Comenzar →</button>
-  <a class="theory-link" onclick="showScreen('theory')">📖 Ver teoría antes de practicar</a>
+  <button class="theory-btn" onclick="showScreen('theory')">
+    <span class="theory-btn-icon">📖</span>
+    <span class="theory-btn-text">Repasar la teoría antes de practicar</span>
+    <span class="theory-btn-arrow">→</span>
+  </button>
 </div>
 
 <!-- ═══ GAME ═══ -->
@@ -198,19 +193,14 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
       <span>🔥 <span class="sv" id="ss">0</span></span>
     </div>
   </div>
-
   <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
-
   <div class="card" id="card">
     <div class="card-badge" id="badge"></div>
     <div class="card-q" id="cq"></div>
   </div>
-
   <div class="ans-grid" id="ans"></div>
   <div class="feedback" id="fb"></div>
-  <button class="next-btn" id="nxt" onclick="nextCard()">
-    Siguiente <small style="opacity:.45;font-size:.72rem">(Enter)</small>
-  </button>
+  <button class="next-btn" id="nxt" onclick="nextCard()">Siguiente <small style="opacity:.45;font-size:.72rem">(Enter)</small></button>
 </div>
 
 <!-- ═══ RESULTS ═══ -->
@@ -229,11 +219,13 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
       <button class="start-btn" onclick="startGame()">Repetir →</button>
     </div>
   </div>
+</div>
+
 <!-- ═══ THEORY ═══ -->
 <div class="screen" id="screen-theory">
   <button class="th-back" onclick="showScreen('settings')">← Volver</button>
-  <h2 class="th-title">Teoría</h2>
-  <p class="th-sub">Conceptos esenciales de armonía</p>
+  <h2 class="th-page-title">Teoría</h2>
+  <p class="th-page-sub">Conceptos esenciales de armonía</p>
 
   <!-- TRÍADAS -->
   <div class="th-block">
@@ -241,24 +233,34 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
       <div class="th-dot" style="background:#d4a843"></div>
       <div class="th-block-name">Tríadas</div>
     </div>
-    <div class="th-block-body">
-      <p class="th-p">Una tríada es un acorde de <strong>3 notas</strong> construidas apilando terceras sobre una raíz. Tiene tres partes: la <strong>raíz</strong> (nota base), la <strong>tercera</strong> y la <strong>quinta</strong>.</p>
+    <div class="th-body">
+      <p class="th-p">Una tríada es un acorde de <strong>3 notas</strong> construidas apilando terceras sobre una raíz: la <strong>raíz</strong>, la <strong>tercera</strong> y la <strong>quinta</strong>. El tamaño de esos intervalos define la <em>calidad</em>.</p>
       <div class="th-rule">
-        <strong>Fórmula:</strong> raíz → (intervalo) → tercera → (intervalo) → quinta<br>
-        Cambiar el tamaño de esos intervalos cambia la <em>calidad</em> de la tríada.
+        <strong>Fórmula (semitonos):</strong><br>
+        Mayor = <em>4 + 3</em> &nbsp;·&nbsp; Menor = <em>3 + 4</em> &nbsp;·&nbsp; Disminuida = <em>3 + 3</em> &nbsp;·&nbsp; Aumentada = <em>4 + 4</em>
       </div>
-      <table class="th-table">
-        <tr><th>Tipo</th><th>Intervalo 1</th><th>Intervalo 2</th><th>Ejemplo (Do)</th><th>Sonido</th></tr>
-        <tr><td>Mayor</td><td>4 semitonos</td><td>3 semitonos</td><td>Do – Mi – Sol</td><td><span class="tag tag-ok">brillante</span></td></tr>
-        <tr><td>Menor</td><td>3 semitonos</td><td>4 semitonos</td><td>Do – Mi♭ – Sol</td><td><span class="tag tag-acc">oscuro</span></td></tr>
-        <tr><td>Disminuida</td><td>3 semitonos</td><td>3 semitonos</td><td>Do – Mi♭ – Sol♭</td><td><span class="tag tag-warn">tenso</span></td></tr>
-        <tr><td>Aumentada</td><td>4 semitonos</td><td>4 semitonos</td><td>Do – Mi – Sol♯</td><td><span class="tag tag-red">flotante</span></td></tr>
-      </table>
-      <div class="th-rule">
-        <strong>Truco para recordar los intervalos:</strong><br>
-        Mayor = 4+3 &nbsp;·&nbsp; Menor = 3+4 &nbsp;·&nbsp; Disminuida = 3+3 &nbsp;·&nbsp; Aumentada = 4+4
+      <div class="piano-section">
+        <div class="piano-section-title">Los 4 tipos — ejemplo en Do</div>
+        <div class="piano-grid">
+          <div class="piano-cell">
+            <div class="piano-cell-name">Mayor &nbsp;<span style="color:var(--ok)">Do – Mi – Sol</span></div>
+            <div id="p-triad-M"></div>
+          </div>
+          <div class="piano-cell">
+            <div class="piano-cell-name">Menor &nbsp;<span style="color:var(--acc)">Do – Mi♭ – Sol</span></div>
+            <div id="p-triad-m"></div>
+          </div>
+          <div class="piano-cell">
+            <div class="piano-cell-name">Disminuida &nbsp;<span style="color:#e87040">Do – Mi♭ – Sol♭</span></div>
+            <div id="p-triad-d"></div>
+          </div>
+          <div class="piano-cell">
+            <div class="piano-cell-name">Aumentada &nbsp;<span style="color:#e86868">Do – Mi – Sol♯</span></div>
+            <div id="p-triad-a"></div>
+          </div>
+        </div>
       </div>
-      <p class="th-p">En el piano: buscá la raíz y contá semitonos hacia arriba (teclas negras y blancas juntas). La diferencia entre mayor y menor es solo un semitono: bajar la tercera.</p>
+      <p class="th-p">En el piano: buscá la raíz y contá semitonos hacia arriba (cada tecla, negra o blanca, es 1 semitono). La diferencia entre mayor y menor es solo una tecla: bajar la tercera.</p>
     </div>
   </div>
 
@@ -268,26 +270,29 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
       <div class="th-dot" style="background:#6bc4e8"></div>
       <div class="th-block-name">Acordes Diatónicos</div>
     </div>
-    <div class="th-block-body">
-      <p class="th-p">Los acordes diatónicos son las tríadas formadas usando <strong>únicamente las notas de una escala mayor</strong>. Cada una de las 7 notas es raíz de un acorde, y su calidad queda fijada por la escala.</p>
+    <div class="th-body">
+      <p class="th-p">Los acordes diatónicos son las tríadas formadas usando <strong>solo las notas de una escala mayor</strong>. Cada una de las 7 notas es raíz de un acorde con una calidad fija.</p>
+      <div class="piano-section">
+        <div class="piano-section-title">Escala de Do Mayor — los 7 acordes diatónicos</div>
+        <div id="p-diatonic" style="padding:0 4px"></div>
+      </div>
       <table class="th-table">
-        <tr><th>Grado</th><th>Símbolo</th><th>Calidad</th><th>En Do mayor</th><th>Función</th></tr>
-        <tr><td>I</td><td>I</td><td>Mayor</td><td>Do mayor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
-        <tr><td>II</td><td>ii</td><td>Menor</td><td>Re menor</td><td><span class="tag tag-acc">Subdominante</span></td></tr>
-        <tr><td>III</td><td>iii</td><td>Menor</td><td>Mi menor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
-        <tr><td>IV</td><td>IV</td><td>Mayor</td><td>Fa mayor</td><td><span class="tag tag-acc">Subdominante</span></td></tr>
-        <tr><td>V</td><td>V</td><td>Mayor</td><td>Sol mayor</td><td><span class="tag tag-warn">Dominante</span></td></tr>
-        <tr><td>VI</td><td>vi</td><td>Menor</td><td>La menor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
-        <tr><td>VII</td><td>VII°</td><td>Disminuida</td><td>Si disminuida</td><td><span class="tag tag-warn">Dominante</span></td></tr>
+        <tr><th>Grado</th><th>Calidad</th><th>En Do mayor</th><th>Función</th></tr>
+        <tr><td>I</td><td>Mayor</td><td>Do mayor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
+        <tr><td>ii</td><td>Menor</td><td>Re menor</td><td><span class="tag tag-acc">Subdominante</span></td></tr>
+        <tr><td>iii</td><td>Menor</td><td>Mi menor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
+        <tr><td>IV</td><td>Mayor</td><td>Fa mayor</td><td><span class="tag tag-acc">Subdominante</span></td></tr>
+        <tr><td>V</td><td>Mayor</td><td>Sol mayor</td><td><span class="tag tag-warn">Dominante</span></td></tr>
+        <tr><td>vi</td><td>Menor</td><td>La menor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
+        <tr><td>VII°</td><td>Disminuida</td><td>Si disminuida</td><td><span class="tag tag-warn">Dominante</span></td></tr>
       </table>
       <div class="th-rule">
-        <strong>Regla de oro:</strong> el patrón M m m M M m d° es igual en <em>todas</em> las tonalidades mayores. Solo cambian los nombres de las notas, nunca las calidades.
+        <strong>Regla de oro:</strong> el patrón <em>M m m M M m d°</em> es igual en todas las tonalidades. Solo cambian los nombres de las notas, nunca las calidades.
       </div>
-      <p class="th-p"><strong>Mayúscula = mayor, minúscula = menor.</strong> Las tres funciones explican la lógica del movimiento armónico:</p>
       <div class="th-rule">
-        <strong>Tónica</strong> (I, iii, vi) — reposo, hogar, estabilidad. Donde todo comienza y termina.<br>
-        <strong>Subdominante</strong> (ii, IV) — tensión suave. Aleja la música del reposo.<br>
-        <strong>Dominante</strong> (V, VII°) — tensión fuerte. Quiere resolver al I con urgencia.
+        <strong>Tónica</strong> (I, iii, vi) — reposo, hogar.<br>
+        <strong>Subdominante</strong> (ii, IV) — tensión suave.<br>
+        <strong>Dominante</strong> (V, VII°) — tensión fuerte, quiere resolver al I.
       </div>
     </div>
   </div>
@@ -298,21 +303,35 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
       <div class="th-dot" style="background:#5bbfab"></div>
       <div class="th-block-name">Acordes de 7ª</div>
     </div>
-    <div class="th-block-body">
-      <p class="th-p">Se obtiene agregando una <strong>cuarta nota</strong> por encima de la quinta: la séptima de la raíz. Hay 4 tipos que aparecen de forma natural en la escala mayor:</p>
+    <div class="th-body">
+      <p class="th-p">Agregando una <strong>cuarta nota</strong> a la tríada — la séptima de la raíz — se obtiene un acorde de séptima. Son más ricos y expresivos. En la escala mayor aparecen 4 tipos:</p>
+      <div class="piano-section">
+        <div class="piano-section-title">Comparación: Mayor 7 vs Dominante 7 en Do</div>
+        <div class="piano-grid" style="grid-template-columns:1fr 1fr">
+          <div class="piano-cell">
+            <div class="piano-cell-name">Do <span style="color:var(--ok)">Maj7</span> &nbsp;(I, IV)</div>
+            <div id="p-maj7"></div>
+            <div style="font-size:.65rem;color:var(--txt-mute);margin-top:6px;text-align:center;font-family:system-ui">Do – Mi – Sol – <strong style="color:var(--ok)">Si</strong></div>
+          </div>
+          <div class="piano-cell">
+            <div class="piano-cell-name">Do <span style="color:#e87040">Dom 7</span> &nbsp;(V)</div>
+            <div id="p-dom7"></div>
+            <div style="font-size:.65rem;color:var(--txt-mute);margin-top:6px;text-align:center;font-family:system-ui">Do – Mi – Sol – <strong style="color:#e87040">Si♭</strong></div>
+          </div>
+        </div>
+      </div>
       <table class="th-table">
         <tr><th>Grado</th><th>Tipo</th><th>Símbolo</th><th>En Do mayor</th></tr>
-        <tr><td>I</td><td>Mayor con 7ª mayor</td><td>Δ7 / Maj7</td><td>Do – Mi – Sol – Si</td></tr>
-        <tr><td>ii</td><td>Menor con 7ª menor</td><td>m7</td><td>Re – Fa – La – Do</td></tr>
-        <tr><td>iii</td><td>Menor con 7ª menor</td><td>m7</td><td>Mi – Sol – Si – Re</td></tr>
-        <tr><td>IV</td><td>Mayor con 7ª mayor</td><td>Δ7 / Maj7</td><td>Fa – La – Do – Mi</td></tr>
-        <tr><td>V</td><td>Dominante</td><td>7</td><td>Sol – Si – Re – Fa</td></tr>
-        <tr><td>vi</td><td>Menor con 7ª menor</td><td>m7</td><td>La – Do – Mi – Sol</td></tr>
-        <tr><td>VII°</td><td>Semidisminuido</td><td>ø7 / m7♭5</td><td>Si – Re – Fa – La</td></tr>
+        <tr><td>I</td><td>Mayor 7</td><td>Δ7</td><td>Do – Mi – Sol – Si</td></tr>
+        <tr><td>ii</td><td>Menor 7</td><td>m7</td><td>Re – Fa – La – Do</td></tr>
+        <tr><td>iii</td><td>Menor 7</td><td>m7</td><td>Mi – Sol – Si – Re</td></tr>
+        <tr><td>IV</td><td>Mayor 7</td><td>Δ7</td><td>Fa – La – Do – Mi</td></tr>
+        <tr><td>V</td><td>Dominante 7</td><td>7</td><td>Sol – Si – Re – Fa</td></tr>
+        <tr><td>vi</td><td>Menor 7</td><td>m7</td><td>La – Do – Mi – Sol</td></tr>
+        <tr><td>VII°</td><td>Semidisminuido</td><td>ø7</td><td>Si – Re – Fa – La</td></tr>
       </table>
       <div class="th-rule">
-        <strong>El V7 (dominante) es el más importante:</strong> el intervalo de tritono entre su 3ª (Si) y su 7ª (Fa) genera la tensión más poderosa de la armonía tonal. Siempre quiere resolver al I.<br><br>
-        En jazz todos los acordes suelen ser de 7ª. En pop y clásico, el V7 es el más frecuente.
+        <strong>El V7 es especial:</strong> la tensión entre su 3ª (Si) y su 7ª (Fa) forma un <em>tritono</em> — el intervalo más inestable de la armonía. Siempre quiere resolver al I.
       </div>
     </div>
   </div>
@@ -323,39 +342,174 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
       <div class="th-dot" style="background:#e86868"></div>
       <div class="th-block-name">Progresiones</div>
     </div>
-    <div class="th-block-body">
-      <p class="th-p">Una progresión es una <strong>secuencia de acordes</strong> con lógica de tensión y resolución. El movimiento fundamental es simple: salir del reposo, crear tensión y volver a casa.</p>
-      <div class="th-rule">
-        <strong>El arco básico:</strong> Tónica → Subdominante → Dominante → Tónica<br>
-        En cifrado romano: <em>I → IV → V → I</em>
+    <div class="th-body">
+      <p class="th-p">Una progresión es una <strong>secuencia de acordes</strong> con lógica de tensión y resolución. El movimiento básico: salir del reposo, crear tensión y volver a casa.</p>
+      <div class="piano-section">
+        <div class="piano-section-title">El movimiento fundamental — I → IV → V → I en Do mayor</div>
+        <div class="prog-flow" id="prog-flow-basic"></div>
       </div>
       <table class="th-table">
         <tr><th>Progresión</th><th>En Do mayor</th><th>Se escucha en</th></tr>
         <tr><td>I – IV – V – I</td><td>Do – Fa – Sol – Do</td><td>Blues, rock, folk</td></tr>
         <tr><td>I – V – vi – IV</td><td>Do – Sol – La m – Fa</td><td>Pop moderno (miles de canciones)</td></tr>
-        <tr><td>ii – V – I</td><td>Re m – Sol – Do</td><td>Jazz: la progresión fundamental</td></tr>
+        <tr><td>ii – V – I</td><td>Re m – Sol – Do</td><td>Jazz: la más importante</td></tr>
         <tr><td>I – vi – IV – V</td><td>Do – La m – Fa – Sol</td><td>Rock and roll, los 50s</td></tr>
-        <tr><td>vi – IV – I – V</td><td>La m – Fa – Do – Sol</td><td>Baladas pop, variante del anterior</td></tr>
-        <tr><td>iii – vi – ii – V</td><td>Mi m – La m – Re m – Sol</td><td>Jazz: turnaround clásico</td></tr>
-        <tr><td>IV – V – I</td><td>Fa – Sol – Do</td><td>Cadencia final, muy común</td></tr>
-        <tr><td>I – iii – IV – V</td><td>Do – Mi m – Fa – Sol</td><td>Rock, música cinematográfica</td></tr>
+        <tr><td>vi – IV – I – V</td><td>La m – Fa – Do – Sol</td><td>Baladas pop</td></tr>
+        <tr><td>iii – vi – ii – V</td><td>Mi m – La m – Re m – Sol</td><td>Jazz: turnaround</td></tr>
+        <tr><td>IV – V – I</td><td>Fa – Sol – Do</td><td>Cadencia final</td></tr>
+        <tr><td>I – iii – IV – V</td><td>Do – Mi m – Fa – Sol</td><td>Rock, cine</td></tr>
       </table>
       <div class="th-rule">
-        <strong>Por dónde empezar:</strong> aprendé <em>ii–V–I en Do mayor</em> de memoria. Es la progresión más estudiada en armonía y aparece en prácticamente todo el jazz. Una vez que la tenés clara, transponela tonalidad por tonalidad.
+        <strong>Por dónde empezar:</strong> aprendé <em>ii – V – I en Do mayor</em> de memoria. Es la progresión más estudiada del jazz y aparece constantemente. Una vez que la tenés, transponela tonalidad por tonalidad.
       </div>
-      <p class="th-p">Cuando practiques las flashcards, intentá <strong>tocar la progresión en el piano</strong> al mismo tiempo. Conectar lo visual con lo auditivo es lo que fija el conocimiento.</p>
+      <p class="th-p">Mientras practicás las flashcards, <strong>tocá los acordes en el piano al mismo tiempo</strong>. Conectar lo visual con lo auditivo es lo que fija el conocimiento real.</p>
     </div>
   </div>
 
-  <button class="start-btn" onclick="showScreen('settings')" style="margin-top:8px">← Volver a practicar</button>
+  <button class="start-btn" onclick="showScreen('settings')">← Volver a practicar</button>
 </div>
 
-</div>
+</div><!-- app -->
 <script>
+// ═══════════════════════════════════════════════════════════
+// PIANO SVG RENDERER
+// ═══════════════════════════════════════════════════════════
+// Maps note names to chromatic positions 0–11
+const NOTE_POS = {
+  'Do':0,'Si♯':0,'Do♯':1,'Re♭':1,'Re':2,'Re♯':3,'Mi♭':3,
+  'Mi':4,'Fa♭':4,'Fa':5,'Mi♯':5,'Fa♯':6,'Sol♭':6,
+  'Sol':7,'Sol♯':8,'La♭':8,'La':9,'La♯':10,'Si♭':10,'Si':11,'Do♭':11
+};
+// Which chromatic positions are white keys (within one octave)
+const WHITE_POS = [0,2,4,5,7,9,11]; // C D E F G A B
+// White key display names
+const WHITE_NAMES = ['Do','Re','Mi','Fa','Sol','La','Si'];
+// Black key chromatic positions and their x offset within white-key spacing
+const BLACK_KEYS = [
+  {pos:1,  wi:0}, // C# between C(0) and D(1)
+  {pos:3,  wi:1}, // D# between D(1) and E(2)
+  {pos:6,  wi:3}, // F# between F(3) and G(4)
+  {pos:8,  wi:4}, // G# between G(4) and A(5)
+  {pos:10, wi:5}, // A# between A(5) and B(6)
+];
+
+function renderPiano(noteList, labelMap={}, opts={}) {
+  const {
+    color = '#d4a843',      // highlight color for white keys
+    blackColor = '#c89830', // highlight color for black keys
+    labelColor = '#07070f', // label text on highlighted keys
+    w = 182,                // total SVG width
+  } = opts;
+
+  const KH = 80;           // white key height
+  const BH = 50;           // black key height
+  const WKW = 24;          // white key width
+  const WKS = 26;          // white key spacing (center to center)
+  const BKW = 15;          // black key width
+
+  // Convert note names to chromatic positions
+  const hlPos = new Set(noteList.map(n => {
+    const p = NOTE_POS[n];
+    return p !== undefined ? p : -1;
+  }).filter(p => p >= 0));
+
+  let svg = `<svg class="piano-svg" viewBox="0 0 ${7*WKS} ${KH+20}" xmlns="http://www.w3.org/2000/svg">`;
+
+  // White keys (background layer)
+  WHITE_NAMES.forEach((name, i) => {
+    const pos = WHITE_POS[i];
+    const x = i * WKS + 1;
+    const hl = hlPos.has(pos);
+    const label = labelMap[name] || (hl ? name : '');
+    svg += `<rect x="${x}" y="1" width="${WKW}" height="${KH-2}" rx="3"
+      fill="${hl ? color : '#ddd5c2'}" stroke="#0a0a18" stroke-width="1.5"/>`;
+    if(hl && label) {
+      svg += `<text x="${x + WKW/2}" y="${KH - 7}" text-anchor="middle"
+        font-size="8.5" font-weight="700" fill="${labelColor}"
+        font-family="'JetBrains Mono', monospace">${label}</text>`;
+    }
+  });
+
+  // Black keys (foreground layer)
+  BLACK_KEYS.forEach(bk => {
+    const x = bk.wi * WKS + WKS - BKW/2;
+    const hl = hlPos.has(bk.pos);
+    // Find note name for label
+    const noteName = Object.keys(NOTE_POS).find(n => NOTE_POS[n] === bk.pos && noteList.includes(n));
+    const label = noteName ? (labelMap[noteName] || (hl ? noteName : '')) : '';
+    svg += `<rect x="${x}" y="1" width="${BKW}" height="${BH}" rx="2.5"
+      fill="${hl ? blackColor : '#141428'}" stroke="${hl ? blackColor : 'none'}" stroke-width="1"/>`;
+    if(hl && label) {
+      svg += `<text x="${x + BKW/2}" y="${BH - 4}" text-anchor="middle"
+        font-size="7" font-weight="700" fill="${labelColor}"
+        font-family="'JetBrains Mono', monospace">${label}</text>`;
+    }
+  });
+
+  svg += `</svg>`;
+  return svg;
+}
+
+function initTheory() {
+  // Tríadas
+  document.getElementById('p-triad-M').innerHTML = renderPiano(
+    ['Do','Mi','Sol'], {Do:'R', Mi:'3ª', Sol:'5ª'},
+    {color:'#52c76e', blackColor:'#3da855', labelColor:'#07070f'}
+  );
+  document.getElementById('p-triad-m').innerHTML = renderPiano(
+    ['Do','Mi♭','Sol'], {Do:'R', 'Mi♭':'3ªm', Sol:'5ª'},
+    {color:'#7c6fe8', blackColor:'#5a50c0', labelColor:'#f0ebe0'}
+  );
+  document.getElementById('p-triad-d').innerHTML = renderPiano(
+    ['Do','Mi♭','Sol♭'], {Do:'R', 'Mi♭':'3ªm', 'Sol♭':'5°'},
+    {color:'#e87040', blackColor:'#c05520', labelColor:'#f0ebe0'}
+  );
+  document.getElementById('p-triad-a').innerHTML = renderPiano(
+    ['Do','Mi','Sol♯'], {Do:'R', Mi:'3ª', 'Sol♯':'5ª+'},
+    {color:'#e86868', blackColor:'#c04040', labelColor:'#f0ebe0'}
+  );
+
+  // Diatónico — todos los grados de Do mayor
+  document.getElementById('p-diatonic').innerHTML = renderPiano(
+    ['Do','Re','Mi','Fa','Sol','La','Si'],
+    {Do:'I', Re:'ii', Mi:'iii', Fa:'IV', Sol:'V', La:'vi', Si:'VII°'},
+    {color:'#d4a843', blackColor:'#a87e28', labelColor:'#07070f'}
+  );
+
+  // Séptimas — comparar Maj7 vs Dom7
+  document.getElementById('p-maj7').innerHTML = renderPiano(
+    ['Do','Mi','Sol','Si'],
+    {Do:'1', Mi:'3', Sol:'5', Si:'7M'},
+    {color:'#52c76e', blackColor:'#3da855', labelColor:'#07070f'}
+  );
+  document.getElementById('p-dom7').innerHTML = renderPiano(
+    ['Do','Mi','Sol','Si♭'],
+    {Do:'1', Mi:'3', Sol:'5', 'Si♭':'7m'},
+    {color:'#e87040', blackColor:'#c05520', labelColor:'#f0ebe0'}
+  );
+
+  // Progresión flow — I IV V I en Do
+  const flow = [
+    {roman:'I', name:'Do mayor', fn:'Tónica'},
+    {roman:'IV', name:'Fa mayor', fn:'Subdominante'},
+    {roman:'V', name:'Sol mayor', fn:'Dominante'},
+    {roman:'I', name:'Do mayor', fn:'Tónica'},
+  ];
+  const el = document.getElementById('prog-flow-basic');
+  if(el) {
+    el.innerHTML = flow.map((c,i) =>
+      `<div class="prog-chord">
+        <div class="prog-chord-roman">${c.roman}</div>
+        <div class="prog-chord-name">${c.name}</div>
+        <div class="prog-chord-fn">${c.fn}</div>
+      </div>${i<flow.length-1 ? '<div class="prog-arrow">→</div>' : ''}`
+    ).join('');
+  }
+}
+
 // ═══════════════════════════════════════════════════════════
 // MUSIC DATA
 // ═══════════════════════════════════════════════════════════
-
 const MAJOR_SCALES = {
   'Do' :['Do','Re','Mi','Fa','Sol','La','Si'],
   'Sol':['Sol','La','Si','Do','Re','Mi','Fa♯'],
@@ -370,12 +524,9 @@ const MAJOR_SCALES = {
   'Si♭':['Si♭','Do','Re','Mi♭','Fa','Sol','La'],
   'Fa' :['Fa','Sol','La','Si♭','Do','Re','Mi'],
 };
+const MAJOR_QUAL  = ['mayor','menor','menor','mayor','mayor','menor','disminuida'];
+const MAJOR_ROMAN = ['I','ii','iii','IV','V','vi','VII°'];
 
-// Diatonic chord qualities in major key (degree 0-6)
-const MAJOR_QUAL   = ['mayor','menor','menor','mayor','mayor','menor','disminuida'];
-const MAJOR_ROMAN  = ['I','ii','iii','IV','V','vi','VII°'];
-
-// Triads: 12 roots × 4 qualities (M=mayor m=menor d=disminuida a=aumentada)
 const TRIADS = {
   'Do' :{M:['Do','Mi','Sol'],      m:['Do','Mi♭','Sol'],     d:['Do','Mi♭','Sol♭'],    a:['Do','Mi','Sol♯']},
   'Sol':{M:['Sol','Si','Re'],      m:['Sol','Si♭','Re'],     d:['Sol','Si♭','Re♭'],    a:['Sol','Si','Re♯']},
@@ -390,35 +541,31 @@ const TRIADS = {
   'Si♭':{M:['Si♭','Re','Fa'],     m:['Si♭','Re♭','Fa'],     d:['Si♭','Re♭','Mi'],     a:['Si♭','Re','Fa♯']},
   'Fa' :{M:['Fa','La','Do'],      m:['Fa','La♭','Do'],      d:['Fa','La♭','Do♭'],     a:['Fa','La','Do♯']},
 };
-const QUAL_KEYS = ['M','m','d','a'];
+const QUAL_KEYS  = ['M','m','d','a'];
 const QUAL_NAMES = {M:'mayor',m:'menor',d:'disminuida',a:'aumentada'};
 const QUAL_LABELS= {M:'Mayor',m:'Menor',d:'Disminuida',a:'Aumentada'};
 
-// Seventh chord types in major key
 const SEVENTH_TYPES = ['Mayor 7 (Δ7)','Menor 7 (m7)','Menor 7 (m7)','Mayor 7 (Δ7)','Dominante (7)','Menor 7 (m7)','Semidisminuido (ø7)'];
 const ALL_7TH = ['Mayor 7 (Δ7)','Menor 7 (m7)','Dominante (7)','Semidisminuido (ø7)'];
 
-// Progressions: {name, roman label, degree indices (0-based)}
 const PROGRESSIONS = [
-  {name:'I – IV – V – I',   label:'I–IV–V–I',    deg:[0,3,4,0]},
-  {name:'I – V – vi – IV',  label:'I–V–vi–IV',   deg:[0,4,5,3]},
-  {name:'ii – V – I',       label:'ii–V–I',      deg:[1,4,0]},
-  {name:'I – vi – IV – V',  label:'I–vi–IV–V',   deg:[0,5,3,4]},
-  {name:'vi – IV – I – V',  label:'vi–IV–I–V',   deg:[5,3,0,4]},
-  {name:'iii – vi – ii – V',label:'iii–vi–ii–V',  deg:[2,5,1,4]},
-  {name:'IV – V – I',       label:'IV–V–I',      deg:[3,4,0]},
-  {name:'I – iii – IV – V', label:'I–iii–IV–V',  deg:[0,2,3,4]},
+  {name:'I – IV – V – I',    deg:[0,3,4,0]},
+  {name:'I – V – vi – IV',   deg:[0,4,5,3]},
+  {name:'ii – V – I',        deg:[1,4,0]},
+  {name:'I – vi – IV – V',   deg:[0,5,3,4]},
+  {name:'vi – IV – I – V',   deg:[5,3,0,4]},
+  {name:'iii – vi – ii – V', deg:[2,5,1,4]},
+  {name:'IV – V – I',        deg:[3,4,0]},
+  {name:'I – iii – IV – V',  deg:[0,2,3,4]},
 ];
 
-// Module definitions
 const MODULES = [
-  {id:'triadNotes',  name:'Tríadas → Notas',    desc:'Encontrá las 3 notas de una tríada', col:'#d4a843'},
-  {id:'triadQual',   name:'Notas → Calidad',    desc:'Identificá si es mayor, menor, dim. o aum.', col:'#e87040'},
-  {id:'diatonic',    name:'Acordes Diatónicos',  desc:'Qué acorde corresponde a cada grado', col:'#6bc4e8'},
-  {id:'seventh',     name:'Acordes de 7ª',       desc:'Tipo de séptima en cada grado de la escala', col:'#5bbfab'},
-  {id:'progression', name:'Progresiones',        desc:'Reconocé los acordes de progresiones típicas', col:'#e86868'},
+  {id:'triadNotes', name:'Tríadas → Notas',   desc:'Encontrá las 3 notas de una tríada', col:'#d4a843'},
+  {id:'triadQual',  name:'Notas → Calidad',   desc:'Identificá si es mayor, menor, dim. o aum.', col:'#e87040'},
+  {id:'diatonic',   name:'Acordes Diatónicos', desc:'Qué acorde corresponde a cada grado', col:'#6bc4e8'},
+  {id:'seventh',    name:'Acordes de 7ª',      desc:'Tipo de séptima en cada grado', col:'#5bbfab'},
+  {id:'progression',name:'Progresiones',       desc:'Acordes de progresiones típicas', col:'#e86868'},
 ];
-
 const ALL_KEYS = Object.keys(MAJOR_SCALES);
 const COUNTS = [10,20,30,50];
 
@@ -436,218 +583,141 @@ let ST = {
 // HELPERS
 // ═══════════════════════════════════════════════════════════
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function pick(arr,n){return shuffle([...arr]).slice(0,n);}
-function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
-function fmtChord(note,qual){return `${note} ${qual}`;}
-// Abbreviate chord name for compact display (e.g. "Do mayor" → "Do M")
-function abbr(note,qual){
-  const a={mayor:'M',menor:'m',disminuida:'d°',aumentada:'aum'};
-  return `${note} ${a[qual]||qual}`;
-}
+function fmtChord(n,q){return `${n} ${q}`;}
+function abbr(n,q){const a={mayor:'M',menor:'m',disminuida:'d°',aumentada:'aum'};return `${n} ${a[q]||q}`;}
 
 // ═══════════════════════════════════════════════════════════
-// QUESTION MAKERS — each returns {badge, col, q, correct, wrongs, size}
-// size: 'lg'|'md'|'sm' controls answer button font
+// QUESTION MAKERS
 // ═══════════════════════════════════════════════════════════
-
-// Module 1: given root+quality → pick the 3 notes
-function makeTriadNotes(key, qualIdx){
-  const q = QUAL_KEYS[qualIdx];
-  const notes = TRIADS[key][q];
-  const correct = notes.join(' – ');
-  const wrongs = QUAL_KEYS.filter(x=>x!==q).map(x=>TRIADS[key][x].join(' – '));
-  return {
-    badge:'Tríadas',col:'#d4a843',size:'md',
+function makeTriadNotes(key, qi){
+  const q=QUAL_KEYS[qi], notes=TRIADS[key][q];
+  return {badge:'Tríadas',col:'#d4a843',size:'md',
     q:`¿Cuáles son las notas de<br><strong>${key} ${QUAL_NAMES[q]}</strong>?`,
-    correct, wrongs
-  };
+    correct:notes.join(' – '),
+    wrongs:QUAL_KEYS.filter(x=>x!==q).map(x=>TRIADS[key][x].join(' – '))};
 }
-
-// Module 2: given 3 notes → pick quality
-function makeTriadQual(key, qualIdx){
-  const q = QUAL_KEYS[qualIdx];
-  const notes = TRIADS[key][q];
-  const correct = QUAL_LABELS[q];
-  const wrongs = QUAL_KEYS.filter(x=>x!==q).map(x=>QUAL_LABELS[x]);
-  return {
-    badge:'Calidad de Tríada',col:'#e87040',size:'lg',
+function makeTriadQual(key, qi){
+  const q=QUAL_KEYS[qi], notes=TRIADS[key][q];
+  return {badge:'Calidad de Tríada',col:'#e87040',size:'lg',
     q:`<span class="note-block">${notes.join(' – ')}</span>¿Qué tipo de tríada es?`,
-    correct, wrongs
-  };
+    correct:QUAL_LABELS[q],
+    wrongs:QUAL_KEYS.filter(x=>x!==q).map(x=>QUAL_LABELS[x])};
 }
-
-// Module 3: given key + degree → pick chord name
-function makeDiatonic(key, degIdx){
-  const scale = MAJOR_SCALES[key];
-  const root  = scale[degIdx];
-  const qual  = MAJOR_QUAL[degIdx];
-  const correct = fmtChord(root, qual);
-  // Wrong answers: 3 other degrees from same scale, avoid picking same text
-  const others = shuffle([0,1,2,3,4,5,6].filter(d=>d!==degIdx));
-  const wrongs = [];
-  for(const d of others){
-    const w = fmtChord(scale[d], MAJOR_QUAL[d]);
-    if(w!==correct && !wrongs.includes(w)) wrongs.push(w);
-    if(wrongs.length===3) break;
-  }
-  return {
-    badge:'Acordes Diatónicos',col:'#6bc4e8',size:'md',
-    q:`En <strong><em>${key}</em> mayor</strong>, ¿qué acorde es el <strong>${MAJOR_ROMAN[degIdx]}</strong>?`,
-    correct, wrongs
-  };
+function makeDiatonic(key, di){
+  const scale=MAJOR_SCALES[key], root=scale[di], qual=MAJOR_QUAL[di];
+  const correct=fmtChord(root,qual);
+  const others=shuffle([0,1,2,3,4,5,6].filter(d=>d!==di));
+  const wrongs=[];
+  for(const d of others){const w=fmtChord(scale[d],MAJOR_QUAL[d]);if(w!==correct&&!wrongs.includes(w))wrongs.push(w);if(wrongs.length===3)break;}
+  return {badge:'Acordes Diatónicos',col:'#6bc4e8',size:'md',
+    q:`En <strong><em>${key}</em> mayor</strong>, ¿qué acorde es el <strong>${MAJOR_ROMAN[di]}</strong>?`,
+    correct,wrongs};
 }
-
-// Module 4: given key + degree → seventh chord type
-function makeSeventh(key, degIdx){
-  const correct = SEVENTH_TYPES[degIdx];
-  const wrongs  = ALL_7TH.filter(t=>t!==correct).slice(0,3);
-  // If correct doesn't appear in ALL_7TH selection guard
-  const allOpts = ALL_7TH.filter(t=>t!==correct);
-  return {
-    badge:'Acordes de 7ª',col:'#5bbfab',size:'sm',
-    q:`En <strong><em>${key}</em> mayor</strong>, ¿qué acorde de 7ª es el <strong>${MAJOR_ROMAN[degIdx]}</strong>?`,
-    correct, wrongs: allOpts.slice(0,3)
-  };
+function makeSeventh(key, di){
+  const correct=SEVENTH_TYPES[di];
+  const wrongs=ALL_7TH.filter(t=>t!==correct).slice(0,3);
+  return {badge:'Acordes de 7ª',col:'#5bbfab',size:'sm',
+    q:`En <strong><em>${key}</em> mayor</strong>, ¿qué acorde de 7ª es el <strong>${MAJOR_ROMAN[di]}</strong>?`,
+    correct,wrongs};
 }
-
-// Module 5: given key + progression → list of chords
 function makeProgression(key, prog){
-  const scale = MAJOR_SCALES[key];
-  const chords = prog.deg.map(d=>abbr(scale[d],MAJOR_QUAL[d]));
-  const correct = chords.join(' · ');
-  // Wrong answers: same progression in 3 other keys
-  const otherKeys = shuffle(ALL_KEYS.filter(k=>k!==key));
-  const wrongs = [];
+  const scale=MAJOR_SCALES[key];
+  const correct=prog.deg.map(d=>abbr(scale[d],MAJOR_QUAL[d])).join(' · ');
+  const otherKeys=shuffle(ALL_KEYS.filter(k=>k!==key));
+  const wrongs=[];
   for(const k of otherKeys){
-    const s = MAJOR_SCALES[k];
-    const w = prog.deg.map(d=>abbr(s[d],MAJOR_QUAL[d])).join(' · ');
-    if(w!==correct && !wrongs.includes(w)) wrongs.push(w);
-    if(wrongs.length===3) break;
+    const w=prog.deg.map(d=>abbr(MAJOR_SCALES[k][d],MAJOR_QUAL[d])).join(' · ');
+    if(w!==correct&&!wrongs.includes(w))wrongs.push(w);
+    if(wrongs.length===3)break;
   }
-  return {
-    badge:'Progresiones',col:'#e86868',size:'sm',
+  return {badge:'Progresiones',col:'#e86868',size:'sm',
     q:`En <strong><em>${key}</em> mayor</strong><br>¿cuáles son los acordes de <strong>${prog.name}</strong>?`,
-    correct, wrongs
-  };
+    correct,wrongs};
 }
 
 // ═══════════════════════════════════════════════════════════
-// POOL BUILDER — enumerate all unique questions
+// POOL BUILDER
 // ═══════════════════════════════════════════════════════════
 function buildPool(){
-  const pool = [];
+  const pool=[];
   for(const key of ST.keys){
-    if(ST.mods.includes('triadNotes'))
-      QUAL_KEYS.forEach((_,i) => pool.push(makeTriadNotes(key,i)));
-    if(ST.mods.includes('triadQual'))
-      QUAL_KEYS.forEach((_,i) => pool.push(makeTriadQual(key,i)));
-    if(ST.mods.includes('diatonic'))
-      [0,1,2,3,4,5,6].forEach(d => pool.push(makeDiatonic(key,d)));
-    if(ST.mods.includes('seventh'))
-      [0,1,2,3,4,5,6].forEach(d => pool.push(makeSeventh(key,d)));
-    if(ST.mods.includes('progression'))
-      PROGRESSIONS.forEach(p => pool.push(makeProgression(key,p)));
+    if(ST.mods.includes('triadNotes'))   QUAL_KEYS.forEach((_,i)=>pool.push(makeTriadNotes(key,i)));
+    if(ST.mods.includes('triadQual'))    QUAL_KEYS.forEach((_,i)=>pool.push(makeTriadQual(key,i)));
+    if(ST.mods.includes('diatonic'))     [0,1,2,3,4,5,6].forEach(d=>pool.push(makeDiatonic(key,d)));
+    if(ST.mods.includes('seventh'))      [0,1,2,3,4,5,6].forEach(d=>pool.push(makeSeventh(key,d)));
+    if(ST.mods.includes('progression'))  PROGRESSIONS.forEach(p=>pool.push(makeProgression(key,p)));
   }
-  return shuffle(pool).slice(0, ST.count);
+  return shuffle(pool).slice(0,ST.count);
 }
 
 // ═══════════════════════════════════════════════════════════
 // GAME ENGINE
 // ═══════════════════════════════════════════════════════════
 function startGame(){
-  if(!ST.mods.length || !ST.keys.length) return;
-  ST.qs = buildPool();
+  if(!ST.mods.length||!ST.keys.length)return;
+  ST.qs=buildPool();
   ST.idx=0;ST.ok=0;ST.err=0;ST.streak=0;ST.maxStreak=0;ST.answered=false;
-  showScreen('game');
-  renderCard();
+  showScreen('game');renderCard();
 }
-
 function renderCard(){
-  const q = ST.qs[ST.idx];
+  const q=ST.qs[ST.idx];
   if(!q){showResults();return;}
-  ST.answered = false;
-
-  // header stats
-  document.getElementById('prog').style.width = (ST.idx/ST.qs.length*100)+'%';
-  document.getElementById('qn').textContent = ST.idx+1;
-  document.getElementById('qt').textContent = ST.qs.length;
-  document.getElementById('sc').textContent = ST.ok;
-  document.getElementById('ss').textContent = ST.streak;
-
-  // badge
-  const badge = document.getElementById('badge');
-  badge.textContent = q.badge.toUpperCase();
-  badge.style.color = q.col;
-  badge.style.background = q.col+'22';
-  badge.style.border = '1px solid '+q.col+'44';
-
-  // question
-  document.getElementById('cq').innerHTML = q.q;
-
-  // animate card
-  const card = document.getElementById('card');
-  card.classList.remove('card-in');
-  void card.offsetWidth;
-  card.classList.add('card-in');
-
-  // answer options
-  const opts = shuffle([q.correct, ...q.wrongs]);
-  const sz = q.size || 'md';
-  document.getElementById('ans').innerHTML = opts.map((o,i)=>
+  ST.answered=false;
+  document.getElementById('prog').style.width=(ST.idx/ST.qs.length*100)+'%';
+  document.getElementById('qn').textContent=ST.idx+1;
+  document.getElementById('qt').textContent=ST.qs.length;
+  document.getElementById('sc').textContent=ST.ok;
+  document.getElementById('ss').textContent=ST.streak;
+  const badge=document.getElementById('badge');
+  badge.textContent=q.badge.toUpperCase();
+  badge.style.color=q.col;
+  badge.style.background=q.col+'22';
+  badge.style.border='1px solid '+q.col+'44';
+  document.getElementById('cq').innerHTML=q.q;
+  const card=document.getElementById('card');
+  card.classList.remove('card-in');void card.offsetWidth;card.classList.add('card-in');
+  const opts=shuffle([q.correct,...q.wrongs]);
+  const sz=q.size||'md';
+  document.getElementById('ans').innerHTML=opts.map((o,i)=>
     `<button class="ans-btn" data-val="${encodeURIComponent(o)}" onclick="checkAns(this,'${encodeURIComponent(q.correct)}')">
       <span class="ans-kbd">${i+1}</span>
       <span class="ans-text ${sz}">${o}</span>
     </button>`
   ).join('');
-
-  // reset
-  const fb = document.getElementById('fb');
-  fb.className='feedback'; fb.innerHTML='';
+  const fb=document.getElementById('fb');
+  fb.className='feedback';fb.innerHTML='';
   document.getElementById('nxt').className='next-btn';
 }
-
-function checkAns(btn, encodedCorrect){
-  if(ST.answered) return;
-  ST.answered = true;
-  const correct = decodeURIComponent(encodedCorrect);
-  const selected = decodeURIComponent(btn.dataset.val);
-  const isOk = selected === correct;
-
+function checkAns(btn,encodedCorrect){
+  if(ST.answered)return;
+  ST.answered=true;
+  const correct=decodeURIComponent(encodedCorrect);
+  const selected=decodeURIComponent(btn.dataset.val);
+  const isOk=selected===correct;
   if(isOk){ST.ok++;ST.streak++;ST.maxStreak=Math.max(ST.maxStreak,ST.streak);}
   else{ST.err++;ST.streak=0;}
-  document.getElementById('sc').textContent = ST.ok;
-  document.getElementById('ss').textContent = ST.streak;
-
-  // highlight buttons
+  document.getElementById('sc').textContent=ST.ok;
+  document.getElementById('ss').textContent=ST.streak;
   document.querySelectorAll('.ans-btn').forEach(b=>{
     b.disabled=true;
-    const bval = decodeURIComponent(b.dataset.val);
-    if(bval===correct) b.classList.add(isOk?'correct':'reveal');
-    else if(bval===selected && !isOk) b.classList.add('wrong');
+    const bval=decodeURIComponent(b.dataset.val);
+    if(bval===correct)b.classList.add(isOk?'correct':'reveal');
+    else if(bval===selected&&!isOk)b.classList.add('wrong');
   });
-
-  // feedback
-  const fb = document.getElementById('fb');
+  const fb=document.getElementById('fb');
   if(isOk){
     const msgs=['¡Correcto!','¡Exacto!','¡Muy bien!','¡Perfecto!'];
-    fb.textContent = ST.streak>=3 ? `🔥 ¡Racha de ${ST.streak}!` : msgs[Math.floor(Math.random()*msgs.length)];
+    fb.textContent=ST.streak>=3?`🔥 ¡Racha de ${ST.streak}!`:msgs[Math.floor(Math.random()*msgs.length)];
     fb.className='feedback ok show';
   } else {
-    fb.innerHTML = `La respuesta correcta es <strong>${correct}</strong>`;
+    fb.innerHTML=`La respuesta correcta es <strong>${correct}</strong>`;
     fb.className='feedback err show';
   }
   document.getElementById('nxt').className='next-btn show';
 }
-
-function nextCard(){
-  ST.idx++;
-  if(ST.idx>=ST.qs.length) showResults();
-  else renderCard();
-}
-
+function nextCard(){ST.idx++;if(ST.idx>=ST.qs.length)showResults();else renderCard();}
 function showResults(){
-  const total=ST.ok+ST.err;
-  const pct=total?Math.round(ST.ok/total*100):0;
+  const total=ST.ok+ST.err,pct=total?Math.round(ST.ok/total*100):0;
   document.getElementById('rpct').textContent=pct+'%';
   document.getElementById('rok').textContent=ST.ok;
   document.getElementById('rerr').textContent=ST.err;
@@ -659,26 +729,16 @@ function showResults(){
 // SETTINGS UI
 // ═══════════════════════════════════════════════════════════
 function initSettings(){
-  // modules
-  document.getElementById('mod-grid').innerHTML = MODULES.map(m=>
-    `<div class="mod-card${ST.mods.includes(m.id)?' on':''}" style="--mc:${m.col}"
-         onclick="toggleMod('${m.id}',this)">
+  document.getElementById('mod-grid').innerHTML=MODULES.map(m=>
+    `<div class="mod-card${ST.mods.includes(m.id)?' on':''}" style="--mc:${m.col}" onclick="toggleMod('${m.id}',this)">
       <div class="mod-name">${m.name}</div>
       <div class="mod-desc">${m.desc}</div>
-    </div>`
-  ).join('');
-
-  // keys
-  document.getElementById('key-grid').innerHTML = ALL_KEYS.map(k=>
-    `<div class="key-chip${ST.keys.includes(k)?' on':''}" onclick="toggleKey('${k}',this)">${k}</div>`
-  ).join('');
-
-  // count
-  document.getElementById('cnt-row').innerHTML = COUNTS.map(c=>
-    `<div class="cnt-chip${ST.count===c?' on':''}" onclick="selectCount(${c},this)">${c}</div>`
-  ).join('');
+    </div>`).join('');
+  document.getElementById('key-grid').innerHTML=ALL_KEYS.map(k=>
+    `<div class="key-chip${ST.keys.includes(k)?' on':''}" onclick="toggleKey('${k}',this)">${k}</div>`).join('');
+  document.getElementById('cnt-row').innerHTML=COUNTS.map(c=>
+    `<div class="cnt-chip${ST.count===c?' on':''}" onclick="selectCount(${c},this)">${c}</div>`).join('');
 }
-
 function toggleMod(id,el){
   const i=ST.mods.indexOf(id);
   if(i>=0){if(ST.mods.length>1){ST.mods.splice(i,1);el.classList.remove('on');}}
@@ -703,15 +763,14 @@ function showScreen(name){
   document.getElementById('screen-'+name).classList.add('active');
 }
 function goSettings(){showScreen('settings');initSettings();}
-
 document.addEventListener('keydown',e=>{
   const active=document.querySelector('.screen.active');
-  if(!active||active.id!=='screen-game') return;
+  if(!active||active.id!=='screen-game')return;
   if(e.key==='Enter'&&ST.answered){nextCard();return;}
   if(!ST.answered){
     const i=parseInt(e.key)-1;
     const btns=document.querySelectorAll('.ans-btn');
-    if(i>=0&&i<btns.length) btns[i].click();
+    if(i>=0&&i<btns.length)btns[i].click();
   }
 });
 
@@ -719,6 +778,7 @@ document.addEventListener('keydown',e=>{
 // INIT
 // ═══════════════════════════════════════════════════════════
 initSettings();
+initTheory();
 </script>
 </body>
 </html>
