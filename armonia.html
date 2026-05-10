@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Armonía — Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07070f;--surf:#0f0f1c;--card:#111120;
+  --acc:#7c6fe8;--acc-glow:rgba(124,111,232,.13);--acc-dim:rgba(124,111,232,.55);
+  --txt:#f0ebe0;--txt-dim:rgba(240,235,224,.5);--txt-mute:rgba(240,235,224,.28);
+  --ok:#52c76e;--ok-bg:rgba(82,199,110,.12);
+  --err:#e05a5a;--err-bg:rgba(224,90,90,.12);
+  --bdr:rgba(255,255,255,.07);--card-bdr:rgba(124,111,232,.2);
+}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'JetBrains Mono',monospace}
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(180deg,transparent 0,transparent 37px,rgba(255,255,255,.02) 37px,rgba(255,255,255,.02) 38px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.55) 100%);pointer-events:none;z-index:0}
+
+.app{position:relative;z-index:1;width:100%;max-width:680px;padding:36px 20px 64px}
+
+.screen{display:none}.screen.active{display:block}
+
+/* ── SETTINGS ── */
+.logo{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;text-align:center;letter-spacing:-.02em;margin-bottom:4px}
+.logo span{color:var(--acc);font-style:italic}
+.tagline{text-align:center;color:var(--txt-dim);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:36px}
+
+.sec{margin-bottom:24px}
+.sec-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;color:var(--acc);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--card-bdr)}
+
+/* module cards */
+.mod-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mod-card{background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .14s;user-select:none;position:relative;overflow:hidden}
+.mod-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px;background:var(--mc,var(--acc))}
+.mod-card:hover{border-color:var(--acc-dim)}
+.mod-card.on{background:var(--acc-glow);border-color:var(--acc-dim)}
+.mod-card.on::before{background:var(--mc,var(--acc));opacity:1}
+.mod-name{font-size:.8rem;font-weight:700;color:var(--txt-dim);margin-bottom:2px}
+.mod-card.on .mod-name{color:var(--txt)}
+.mod-desc{font-size:.65rem;color:var(--txt-mute);line-height:1.4}
+.mod-card.on .mod-desc{color:var(--txt-dim)}
+
+/* key chips */
+.key-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.key-chip{background:var(--card);border:1px solid var(--bdr);border-radius:6px;padding:9px 4px;text-align:center;cursor:pointer;font-size:.8rem;font-weight:600;color:var(--txt-dim);transition:all .14s;user-select:none}
+.key-chip:hover{border-color:var(--acc-dim);color:var(--txt)}
+.key-chip.on{background:var(--acc-glow);border-color:var(--acc);color:var(--acc)}
+
+.cnt-row{display:flex;gap:8px}
+.cnt-chip{flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:6px;padding:12px;text-align:center;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:1.05rem;font-weight:700;color:var(--txt-dim);transition:all .14s;user-select:none}
+.cnt-chip:hover{border-color:var(--acc-dim);color:var(--txt)}
+.cnt-chip.on{background:var(--acc-glow);border-color:var(--acc);color:var(--acc)}
+
+.start-btn{width:100%;margin-top:8px;background:var(--acc);color:#f0ebe0;border:none;border-radius:8px;padding:15px;font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;letter-spacing:.02em;cursor:pointer;transition:all .15s}
+.start-btn:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(124,111,232,.35)}
+.start-btn:active{transform:none}
+
+/* ── GAME ── */
+.game-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.exit-btn{background:none;border:1px solid var(--bdr);border-radius:5px;padding:6px 10px;color:var(--txt-dim);font-size:.72rem;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .14s}
+.exit-btn:hover{border-color:var(--txt-dim);color:var(--txt)}
+.stat-row{display:flex;gap:14px;align-items:center;font-size:.78rem;color:var(--txt-dim)}
+.sv{color:var(--txt);font-weight:700}
+
+.prog-track{height:2px;background:var(--bdr);border-radius:1px;margin-bottom:26px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--acc-dim),var(--acc));border-radius:1px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+.card{background:var(--card);border:1px solid var(--card-bdr);border-radius:13px;padding:36px 28px;margin-bottom:18px;text-align:center;position:relative;overflow:hidden;min-height:156px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--acc-dim),transparent)}
+.card-badge{font-size:.62rem;text-transform:uppercase;letter-spacing:.16em;margin-bottom:14px;padding:3px 10px;border-radius:20px;display:inline-block}
+.card-q{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;line-height:1.45;color:var(--txt)}
+.card-q strong{font-weight:900;color:var(--acc)}
+.card-q em{font-style:italic}
+.card-q .note-block{display:block;font-family:'JetBrains Mono',monospace;font-size:1.8rem;font-weight:700;color:var(--txt);margin:10px 0}
+
+.ans-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ans-btn{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:16px 10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .14s;position:relative;min-height:62px}
+.ans-btn:hover:not(:disabled){border-color:var(--acc-dim);background:var(--acc-glow);transform:translateY(-1px)}
+.ans-btn:disabled{cursor:default;transform:none!important}
+.ans-kbd{font-size:.62rem;color:var(--txt-mute);background:rgba(255,255,255,.05);border-radius:3px;padding:2px 5px;flex-shrink:0}
+.ans-text{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--txt);text-align:center;line-height:1.3}
+.ans-text.lg{font-size:1.3rem}
+.ans-text.md{font-size:1rem}
+.ans-text.sm{font-size:.82rem}
+
+.ans-btn.correct{border-color:var(--ok);background:var(--ok-bg);box-shadow:0 0 18px rgba(82,199,110,.12)}
+.ans-btn.correct .ans-text{color:var(--ok)}
+.ans-btn.correct .ans-kbd{opacity:.4}
+.ans-btn.wrong{border-color:var(--err);background:var(--err-bg)}
+.ans-btn.wrong .ans-text{color:var(--err)}
+.ans-btn.reveal{border-color:var(--ok);background:var(--ok-bg)}
+.ans-btn.reveal .ans-text{color:var(--ok)}
+
+.feedback{text-align:center;padding:10px;border-radius:6px;font-size:.82rem;margin-bottom:11px;opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;min-height:36px;display:flex;align-items:center;justify-content:center;line-height:1.4}
+.feedback.show{opacity:1;transform:none}
+.feedback.ok{color:var(--ok)}
+.feedback.err{color:var(--err)}
+
+.next-btn{width:100%;background:transparent;border:1px solid var(--acc-dim);border-radius:8px;padding:13px;font-family:'Playfair Display',serif;font-size:.98rem;font-weight:700;color:var(--acc);cursor:pointer;opacity:0;pointer-events:none;transition:all .2s}
+.next-btn.show{opacity:1;pointer-events:all}
+.next-btn:hover{background:var(--acc-glow)}
+
+/* ── RESULTS ── */
+.res-wrap{text-align:center}
+.res-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--txt-dim);margin-bottom:6px}
+.res-score{font-family:'Playfair Display',serif;font-size:5.5rem;font-weight:900;color:var(--acc);line-height:1;letter-spacing:-.03em;margin-bottom:4px}
+.res-sub{font-size:.68rem;text-transform:uppercase;letter-spacing:.15em;color:var(--txt-mute);margin-bottom:34px}
+.res-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:30px}
+.res-stat{background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:18px 10px}
+.res-val{font-size:1.9rem;font-weight:700;color:var(--txt);display:block}
+.res-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--txt-mute);margin-top:4px}
+.res-acts{display:flex;gap:10px}
+.sec-btn{flex:1;background:var(--card);border:1px solid var(--bdr);border-radius:8px;padding:15px;font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--txt-dim);cursor:pointer;transition:all .14s}
+.sec-btn:hover{border-color:var(--txt-dim);color:var(--txt)}
+.res-acts .start-btn{flex:1;margin-top:0}
+
+@keyframes cardIn{from{opacity:0;transform:translateY(7px) scale(.99)}to{opacity:1;transform:none}}
+.card-in{animation:cardIn .22s ease}
+
+@media(max-width:480px){
+  .logo{font-size:2rem}.card-q{font-size:1.3rem}
+  .ans-grid{grid-template-columns:1fr}.res-score{font-size:4rem}
+  .mod-grid{grid-template-columns:1fr}.key-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ═══ SETTINGS ═══ -->
+<div class="screen active" id="screen-settings">
+  <h1 class="logo"><span>Armonía</span></h1>
+  <p class="tagline">Flashcards · Desde Cero</p>
+
+  <div class="sec">
+    <div class="sec-label">Módulos a practicar</div>
+    <div class="mod-grid" id="mod-grid"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-label">Tonalidades / Raíces</div>
+    <div class="key-grid" id="key-grid"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-label">Número de preguntas</div>
+    <div class="cnt-row" id="cnt-row"></div>
+  </div>
+
+  <button class="start-btn" onclick="startGame()">Comenzar →</button>
+</div>
+
+<!-- ═══ GAME ═══ -->
+<div class="screen" id="screen-game">
+  <div class="game-hdr">
+    <button class="exit-btn" onclick="goSettings()">← Salir</button>
+    <div class="stat-row">
+      <span><span id="qn">1</span>/<span id="qt">20</span></span>
+      <span>✓ <span class="sv" id="sc">0</span></span>
+      <span>🔥 <span class="sv" id="ss">0</span></span>
+    </div>
+  </div>
+
+  <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
+
+  <div class="card" id="card">
+    <div class="card-badge" id="badge"></div>
+    <div class="card-q" id="cq"></div>
+  </div>
+
+  <div class="ans-grid" id="ans"></div>
+  <div class="feedback" id="fb"></div>
+  <button class="next-btn" id="nxt" onclick="nextCard()">
+    Siguiente <small style="opacity:.45;font-size:.72rem">(Enter)</small>
+  </button>
+</div>
+
+<!-- ═══ RESULTS ═══ -->
+<div class="screen" id="screen-results">
+  <div class="res-wrap">
+    <div class="res-title">Resultado final</div>
+    <div class="res-score" id="rpct">0%</div>
+    <div class="res-sub">de respuestas correctas</div>
+    <div class="res-stats">
+      <div class="res-stat"><span class="res-val" id="rok">0</span><div class="res-lbl">Correctas</div></div>
+      <div class="res-stat"><span class="res-val" id="rerr">0</span><div class="res-lbl">Incorrectas</div></div>
+      <div class="res-stat"><span class="res-val" id="rstr">0</span><div class="res-lbl">Racha máx.</div></div>
+    </div>
+    <div class="res-acts">
+      <button class="sec-btn" onclick="goSettings()">← Configurar</button>
+      <button class="start-btn" onclick="startGame()">Repetir →</button>
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+// ═══════════════════════════════════════════════════════════
+// MUSIC DATA
+// ═══════════════════════════════════════════════════════════
+
+const MAJOR_SCALES = {
+  'Do' :['Do','Re','Mi','Fa','Sol','La','Si'],
+  'Sol':['Sol','La','Si','Do','Re','Mi','Fa♯'],
+  'Re' :['Re','Mi','Fa♯','Sol','La','Si','Do♯'],
+  'La' :['La','Si','Do♯','Re','Mi','Fa♯','Sol♯'],
+  'Mi' :['Mi','Fa♯','Sol♯','La','Si','Do♯','Re♯'],
+  'Si' :['Si','Do♯','Re♯','Mi','Fa♯','Sol♯','La♯'],
+  'Fa♯':['Fa♯','Sol♯','La♯','Si','Do♯','Re♯','Mi♯'],
+  'Re♭':['Re♭','Mi♭','Fa','Sol♭','La♭','Si♭','Do'],
+  'La♭':['La♭','Si♭','Do','Re♭','Mi♭','Fa','Sol'],
+  'Mi♭':['Mi♭','Fa','Sol','La♭','Si♭','Do','Re'],
+  'Si♭':['Si♭','Do','Re','Mi♭','Fa','Sol','La'],
+  'Fa' :['Fa','Sol','La','Si♭','Do','Re','Mi'],
+};
+
+// Diatonic chord qualities in major key (degree 0-6)
+const MAJOR_QUAL   = ['mayor','menor','menor','mayor','mayor','menor','disminuida'];
+const MAJOR_ROMAN  = ['I','ii','iii','IV','V','vi','VII°'];
+
+// Triads: 12 roots × 4 qualities (M=mayor m=menor d=disminuida a=aumentada)
+const TRIADS = {
+  'Do' :{M:['Do','Mi','Sol'],      m:['Do','Mi♭','Sol'],     d:['Do','Mi♭','Sol♭'],    a:['Do','Mi','Sol♯']},
+  'Sol':{M:['Sol','Si','Re'],      m:['Sol','Si♭','Re'],     d:['Sol','Si♭','Re♭'],    a:['Sol','Si','Re♯']},
+  'Re' :{M:['Re','Fa♯','La'],      m:['Re','Fa','La'],       d:['Re','Fa','La♭'],      a:['Re','Fa♯','La♯']},
+  'La' :{M:['La','Do♯','Mi'],      m:['La','Do','Mi'],       d:['La','Do','Mi♭'],      a:['La','Do♯','Mi♯']},
+  'Mi' :{M:['Mi','Sol♯','Si'],     m:['Mi','Sol','Si'],      d:['Mi','Sol','Si♭'],     a:['Mi','Sol♯','Do']},
+  'Si' :{M:['Si','Re♯','Fa♯'],     m:['Si','Re','Fa♯'],      d:['Si','Re','Fa'],       a:['Si','Re♯','Sol']},
+  'Fa♯':{M:['Fa♯','La♯','Do♯'],   m:['Fa♯','La','Do♯'],     d:['Fa♯','La','Do'],      a:['Fa♯','La♯','Re']},
+  'Re♭':{M:['Re♭','Fa','La♭'],    m:['Re♭','Fa♭','La♭'],    d:['Re♭','Fa♭','Sol'],    a:['Re♭','Fa','La']},
+  'La♭':{M:['La♭','Do','Mi♭'],    m:['La♭','Do♭','Mi♭'],    d:['La♭','Do♭','Re'],     a:['La♭','Do','Mi']},
+  'Mi♭':{M:['Mi♭','Sol','Si♭'],   m:['Mi♭','Sol♭','Si♭'],   d:['Mi♭','Sol♭','La'],    a:['Mi♭','Sol','Si']},
+  'Si♭':{M:['Si♭','Re','Fa'],     m:['Si♭','Re♭','Fa'],     d:['Si♭','Re♭','Mi'],     a:['Si♭','Re','Fa♯']},
+  'Fa' :{M:['Fa','La','Do'],      m:['Fa','La♭','Do'],      d:['Fa','La♭','Do♭'],     a:['Fa','La','Do♯']},
+};
+const QUAL_KEYS = ['M','m','d','a'];
+const QUAL_NAMES = {M:'mayor',m:'menor',d:'disminuida',a:'aumentada'};
+const QUAL_LABELS= {M:'Mayor',m:'Menor',d:'Disminuida',a:'Aumentada'};
+
+// Seventh chord types in major key
+const SEVENTH_TYPES = ['Mayor 7 (Δ7)','Menor 7 (m7)','Menor 7 (m7)','Mayor 7 (Δ7)','Dominante (7)','Menor 7 (m7)','Semidisminuido (ø7)'];
+const ALL_7TH = ['Mayor 7 (Δ7)','Menor 7 (m7)','Dominante (7)','Semidisminuido (ø7)'];
+
+// Progressions: {name, roman label, degree indices (0-based)}
+const PROGRESSIONS = [
+  {name:'I – IV – V – I',   label:'I–IV–V–I',    deg:[0,3,4,0]},
+  {name:'I – V – vi – IV',  label:'I–V–vi–IV',   deg:[0,4,5,3]},
+  {name:'ii – V – I',       label:'ii–V–I',      deg:[1,4,0]},
+  {name:'I – vi – IV – V',  label:'I–vi–IV–V',   deg:[0,5,3,4]},
+  {name:'vi – IV – I – V',  label:'vi–IV–I–V',   deg:[5,3,0,4]},
+  {name:'iii – vi – ii – V',label:'iii–vi–ii–V',  deg:[2,5,1,4]},
+  {name:'IV – V – I',       label:'IV–V–I',      deg:[3,4,0]},
+  {name:'I – iii – IV – V', label:'I–iii–IV–V',  deg:[0,2,3,4]},
+];
+
+// Module definitions
+const MODULES = [
+  {id:'triadNotes',  name:'Tríadas → Notas',    desc:'Encontrá las 3 notas de una tríada', col:'#d4a843'},
+  {id:'triadQual',   name:'Notas → Calidad',    desc:'Identificá si es mayor, menor, dim. o aum.', col:'#e87040'},
+  {id:'diatonic',    name:'Acordes Diatónicos',  desc:'Qué acorde corresponde a cada grado', col:'#6bc4e8'},
+  {id:'seventh',     name:'Acordes de 7ª',       desc:'Tipo de séptima en cada grado de la escala', col:'#5bbfab'},
+  {id:'progression', name:'Progresiones',        desc:'Reconocé los acordes de progresiones típicas', col:'#e86868'},
+];
+
+const ALL_KEYS = Object.keys(MAJOR_SCALES);
+const COUNTS = [10,20,30,50];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+let ST = {
+  mods:['triadNotes','diatonic'],
+  keys:['Do','Sol','Re','La','Mi','Fa'],
+  count:20,
+  qs:[],idx:0,ok:0,err:0,streak:0,maxStreak:0,answered:false
+};
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function pick(arr,n){return shuffle([...arr]).slice(0,n);}
+function rand(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function fmtChord(note,qual){return `${note} ${qual}`;}
+// Abbreviate chord name for compact display (e.g. "Do mayor" → "Do M")
+function abbr(note,qual){
+  const a={mayor:'M',menor:'m',disminuida:'d°',aumentada:'aum'};
+  return `${note} ${a[qual]||qual}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// QUESTION MAKERS — each returns {badge, col, q, correct, wrongs, size}
+// size: 'lg'|'md'|'sm' controls answer button font
+// ═══════════════════════════════════════════════════════════
+
+// Module 1: given root+quality → pick the 3 notes
+function makeTriadNotes(key, qualIdx){
+  const q = QUAL_KEYS[qualIdx];
+  const notes = TRIADS[key][q];
+  const correct = notes.join(' – ');
+  const wrongs = QUAL_KEYS.filter(x=>x!==q).map(x=>TRIADS[key][x].join(' – '));
+  return {
+    badge:'Tríadas',col:'#d4a843',size:'md',
+    q:`¿Cuáles son las notas de<br><strong>${key} ${QUAL_NAMES[q]}</strong>?`,
+    correct, wrongs
+  };
+}
+
+// Module 2: given 3 notes → pick quality
+function makeTriadQual(key, qualIdx){
+  const q = QUAL_KEYS[qualIdx];
+  const notes = TRIADS[key][q];
+  const correct = QUAL_LABELS[q];
+  const wrongs = QUAL_KEYS.filter(x=>x!==q).map(x=>QUAL_LABELS[x]);
+  return {
+    badge:'Calidad de Tríada',col:'#e87040',size:'lg',
+    q:`<span class="note-block">${notes.join(' – ')}</span>¿Qué tipo de tríada es?`,
+    correct, wrongs
+  };
+}
+
+// Module 3: given key + degree → pick chord name
+function makeDiatonic(key, degIdx){
+  const scale = MAJOR_SCALES[key];
+  const root  = scale[degIdx];
+  const qual  = MAJOR_QUAL[degIdx];
+  const correct = fmtChord(root, qual);
+  // Wrong answers: 3 other degrees from same scale, avoid picking same text
+  const others = shuffle([0,1,2,3,4,5,6].filter(d=>d!==degIdx));
+  const wrongs = [];
+  for(const d of others){
+    const w = fmtChord(scale[d], MAJOR_QUAL[d]);
+    if(w!==correct && !wrongs.includes(w)) wrongs.push(w);
+    if(wrongs.length===3) break;
+  }
+  return {
+    badge:'Acordes Diatónicos',col:'#6bc4e8',size:'md',
+    q:`En <strong><em>${key}</em> mayor</strong>, ¿qué acorde es el <strong>${MAJOR_ROMAN[degIdx]}</strong>?`,
+    correct, wrongs
+  };
+}
+
+// Module 4: given key + degree → seventh chord type
+function makeSeventh(key, degIdx){
+  const correct = SEVENTH_TYPES[degIdx];
+  const wrongs  = ALL_7TH.filter(t=>t!==correct).slice(0,3);
+  // If correct doesn't appear in ALL_7TH selection guard
+  const allOpts = ALL_7TH.filter(t=>t!==correct);
+  return {
+    badge:'Acordes de 7ª',col:'#5bbfab',size:'sm',
+    q:`En <strong><em>${key}</em> mayor</strong>, ¿qué acorde de 7ª es el <strong>${MAJOR_ROMAN[degIdx]}</strong>?`,
+    correct, wrongs: allOpts.slice(0,3)
+  };
+}
+
+// Module 5: given key + progression → list of chords
+function makeProgression(key, prog){
+  const scale = MAJOR_SCALES[key];
+  const chords = prog.deg.map(d=>abbr(scale[d],MAJOR_QUAL[d]));
+  const correct = chords.join(' · ');
+  // Wrong answers: same progression in 3 other keys
+  const otherKeys = shuffle(ALL_KEYS.filter(k=>k!==key));
+  const wrongs = [];
+  for(const k of otherKeys){
+    const s = MAJOR_SCALES[k];
+    const w = prog.deg.map(d=>abbr(s[d],MAJOR_QUAL[d])).join(' · ');
+    if(w!==correct && !wrongs.includes(w)) wrongs.push(w);
+    if(wrongs.length===3) break;
+  }
+  return {
+    badge:'Progresiones',col:'#e86868',size:'sm',
+    q:`En <strong><em>${key}</em> mayor</strong><br>¿cuáles son los acordes de <strong>${prog.name}</strong>?`,
+    correct, wrongs
+  };
+}
+
+// ═══════════════════════════════════════════════════════════
+// POOL BUILDER — enumerate all unique questions
+// ═══════════════════════════════════════════════════════════
+function buildPool(){
+  const pool = [];
+  for(const key of ST.keys){
+    if(ST.mods.includes('triadNotes'))
+      QUAL_KEYS.forEach((_,i) => pool.push(makeTriadNotes(key,i)));
+    if(ST.mods.includes('triadQual'))
+      QUAL_KEYS.forEach((_,i) => pool.push(makeTriadQual(key,i)));
+    if(ST.mods.includes('diatonic'))
+      [0,1,2,3,4,5,6].forEach(d => pool.push(makeDiatonic(key,d)));
+    if(ST.mods.includes('seventh'))
+      [0,1,2,3,4,5,6].forEach(d => pool.push(makeSeventh(key,d)));
+    if(ST.mods.includes('progression'))
+      PROGRESSIONS.forEach(p => pool.push(makeProgression(key,p)));
+  }
+  return shuffle(pool).slice(0, ST.count);
+}
+
+// ═══════════════════════════════════════════════════════════
+// GAME ENGINE
+// ═══════════════════════════════════════════════════════════
+function startGame(){
+  if(!ST.mods.length || !ST.keys.length) return;
+  ST.qs = buildPool();
+  ST.idx=0;ST.ok=0;ST.err=0;ST.streak=0;ST.maxStreak=0;ST.answered=false;
+  showScreen('game');
+  renderCard();
+}
+
+function renderCard(){
+  const q = ST.qs[ST.idx];
+  if(!q){showResults();return;}
+  ST.answered = false;
+
+  // header stats
+  document.getElementById('prog').style.width = (ST.idx/ST.qs.length*100)+'%';
+  document.getElementById('qn').textContent = ST.idx+1;
+  document.getElementById('qt').textContent = ST.qs.length;
+  document.getElementById('sc').textContent = ST.ok;
+  document.getElementById('ss').textContent = ST.streak;
+
+  // badge
+  const badge = document.getElementById('badge');
+  badge.textContent = q.badge.toUpperCase();
+  badge.style.color = q.col;
+  badge.style.background = q.col+'22';
+  badge.style.border = '1px solid '+q.col+'44';
+
+  // question
+  document.getElementById('cq').innerHTML = q.q;
+
+  // animate card
+  const card = document.getElementById('card');
+  card.classList.remove('card-in');
+  void card.offsetWidth;
+  card.classList.add('card-in');
+
+  // answer options
+  const opts = shuffle([q.correct, ...q.wrongs]);
+  const sz = q.size || 'md';
+  document.getElementById('ans').innerHTML = opts.map((o,i)=>
+    `<button class="ans-btn" data-val="${encodeURIComponent(o)}" onclick="checkAns(this,'${encodeURIComponent(q.correct)}')">
+      <span class="ans-kbd">${i+1}</span>
+      <span class="ans-text ${sz}">${o}</span>
+    </button>`
+  ).join('');
+
+  // reset
+  const fb = document.getElementById('fb');
+  fb.className='feedback'; fb.innerHTML='';
+  document.getElementById('nxt').className='next-btn';
+}
+
+function checkAns(btn, encodedCorrect){
+  if(ST.answered) return;
+  ST.answered = true;
+  const correct = decodeURIComponent(encodedCorrect);
+  const selected = decodeURIComponent(btn.dataset.val);
+  const isOk = selected === correct;
+
+  if(isOk){ST.ok++;ST.streak++;ST.maxStreak=Math.max(ST.maxStreak,ST.streak);}
+  else{ST.err++;ST.streak=0;}
+  document.getElementById('sc').textContent = ST.ok;
+  document.getElementById('ss').textContent = ST.streak;
+
+  // highlight buttons
+  document.querySelectorAll('.ans-btn').forEach(b=>{
+    b.disabled=true;
+    const bval = decodeURIComponent(b.dataset.val);
+    if(bval===correct) b.classList.add(isOk?'correct':'reveal');
+    else if(bval===selected && !isOk) b.classList.add('wrong');
+  });
+
+  // feedback
+  const fb = document.getElementById('fb');
+  if(isOk){
+    const msgs=['¡Correcto!','¡Exacto!','¡Muy bien!','¡Perfecto!'];
+    fb.textContent = ST.streak>=3 ? `🔥 ¡Racha de ${ST.streak}!` : msgs[Math.floor(Math.random()*msgs.length)];
+    fb.className='feedback ok show';
+  } else {
+    fb.innerHTML = `La respuesta correcta es <strong>${correct}</strong>`;
+    fb.className='feedback err show';
+  }
+  document.getElementById('nxt').className='next-btn show';
+}
+
+function nextCard(){
+  ST.idx++;
+  if(ST.idx>=ST.qs.length) showResults();
+  else renderCard();
+}
+
+function showResults(){
+  const total=ST.ok+ST.err;
+  const pct=total?Math.round(ST.ok/total*100):0;
+  document.getElementById('rpct').textContent=pct+'%';
+  document.getElementById('rok').textContent=ST.ok;
+  document.getElementById('rerr').textContent=ST.err;
+  document.getElementById('rstr').textContent=ST.maxStreak;
+  showScreen('results');
+}
+
+// ═══════════════════════════════════════════════════════════
+// SETTINGS UI
+// ═══════════════════════════════════════════════════════════
+function initSettings(){
+  // modules
+  document.getElementById('mod-grid').innerHTML = MODULES.map(m=>
+    `<div class="mod-card${ST.mods.includes(m.id)?' on':''}" style="--mc:${m.col}"
+         onclick="toggleMod('${m.id}',this)">
+      <div class="mod-name">${m.name}</div>
+      <div class="mod-desc">${m.desc}</div>
+    </div>`
+  ).join('');
+
+  // keys
+  document.getElementById('key-grid').innerHTML = ALL_KEYS.map(k=>
+    `<div class="key-chip${ST.keys.includes(k)?' on':''}" onclick="toggleKey('${k}',this)">${k}</div>`
+  ).join('');
+
+  // count
+  document.getElementById('cnt-row').innerHTML = COUNTS.map(c=>
+    `<div class="cnt-chip${ST.count===c?' on':''}" onclick="selectCount(${c},this)">${c}</div>`
+  ).join('');
+}
+
+function toggleMod(id,el){
+  const i=ST.mods.indexOf(id);
+  if(i>=0){if(ST.mods.length>1){ST.mods.splice(i,1);el.classList.remove('on');}}
+  else{ST.mods.push(id);el.classList.add('on');}
+}
+function toggleKey(k,el){
+  const i=ST.keys.indexOf(k);
+  if(i>=0){if(ST.keys.length>1){ST.keys.splice(i,1);el.classList.remove('on');}}
+  else{ST.keys.push(k);el.classList.add('on');}
+}
+function selectCount(c,el){
+  ST.count=c;
+  document.querySelectorAll('.cnt-chip').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+}
+
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION + KEYBOARD
+// ═══════════════════════════════════════════════════════════
+function showScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+}
+function goSettings(){showScreen('settings');initSettings();}
+
+document.addEventListener('keydown',e=>{
+  const active=document.querySelector('.screen.active');
+  if(!active||active.id!=='screen-game') return;
+  if(e.key==='Enter'&&ST.answered){nextCard();return;}
+  if(!ST.answered){
+    const i=parseInt(e.key)-1;
+    const btns=document.querySelectorAll('.ans-btn');
+    if(i>=0&&i<btns.length) btns[i].click();
+  }
+});
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+initSettings();
+</script>
+</body>
+</html>
