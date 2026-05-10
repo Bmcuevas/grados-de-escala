@@ -127,6 +127,38 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
   .ans-grid{grid-template-columns:1fr}.res-score{font-size:4rem}
   .mod-grid{grid-template-columns:1fr}.key-grid{grid-template-columns:repeat(4,1fr)}
 }
+
+/* ── THEORY ── */
+.theory-link{display:block;text-align:center;margin-bottom:28px;color:var(--acc-dim);font-size:.78rem;cursor:pointer;letter-spacing:.06em;transition:color .14s;text-decoration:none}
+.theory-link:hover{color:var(--acc)}
+.th-back{background:none;border:1px solid var(--bdr);border-radius:5px;padding:6px 10px;color:var(--txt-dim);font-size:.72rem;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .14s;margin-bottom:28px;display:inline-block}
+.th-back:hover{border-color:var(--txt-dim);color:var(--txt)}
+.th-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;margin-bottom:4px}
+.th-sub{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--txt-dim);margin-bottom:36px}
+
+.th-block{margin-bottom:36px;background:var(--card);border:1px solid var(--bdr);border-radius:12px;overflow:hidden}
+.th-block-head{padding:16px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bdr)}
+.th-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.th-block-name{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--txt)}
+.th-block-body{padding:18px 20px}
+.th-p{color:var(--txt-dim);font-size:.85rem;line-height:1.75;margin-bottom:14px;font-family:system-ui,sans-serif}
+.th-p strong{color:var(--txt);font-weight:600}
+.th-p em{color:var(--acc);font-style:normal}
+
+.th-rule{background:rgba(124,111,232,.08);border:1px solid rgba(124,111,232,.2);border-radius:7px;padding:11px 15px;font-size:.8rem;color:var(--txt-dim);margin:12px 0;line-height:1.65;font-family:system-ui,sans-serif}
+.th-rule strong{color:var(--acc)}
+
+.th-table{width:100%;border-collapse:collapse;font-size:.8rem;margin:14px 0}
+.th-table th{text-align:left;padding:6px 10px;color:var(--acc);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--bdr);font-family:'JetBrains Mono',monospace}
+.th-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--txt-dim);font-family:system-ui,sans-serif;font-size:.82rem}
+.th-table td:first-child{color:var(--txt);font-weight:600;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.th-table tr:last-child td{border-bottom:none}
+.th-table tr:hover td{background:rgba(255,255,255,.02)}
+.tag{display:inline-block;padding:1px 7px;border-radius:3px;font-size:.7rem;font-family:'JetBrains Mono',monospace}
+.tag-ok{background:rgba(82,199,110,.15);color:var(--ok)}
+.tag-acc{background:var(--acc-glow);color:var(--acc)}
+.tag-warn{background:rgba(232,112,64,.15);color:#e87040}
+.tag-red{background:rgba(232,104,104,.15);color:#e86868}
 </style>
 </head>
 <body>
@@ -153,6 +185,7 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
   </div>
 
   <button class="start-btn" onclick="startGame()">Comenzar →</button>
+  <a class="theory-link" onclick="showScreen('theory')">📖 Ver teoría antes de practicar</a>
 </div>
 
 <!-- ═══ GAME ═══ -->
@@ -196,6 +229,125 @@ body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse
       <button class="start-btn" onclick="startGame()">Repetir →</button>
     </div>
   </div>
+<!-- ═══ THEORY ═══ -->
+<div class="screen" id="screen-theory">
+  <button class="th-back" onclick="showScreen('settings')">← Volver</button>
+  <h2 class="th-title">Teoría</h2>
+  <p class="th-sub">Conceptos esenciales de armonía</p>
+
+  <!-- TRÍADAS -->
+  <div class="th-block">
+    <div class="th-block-head">
+      <div class="th-dot" style="background:#d4a843"></div>
+      <div class="th-block-name">Tríadas</div>
+    </div>
+    <div class="th-block-body">
+      <p class="th-p">Una tríada es un acorde de <strong>3 notas</strong> construidas apilando terceras sobre una raíz. Tiene tres partes: la <strong>raíz</strong> (nota base), la <strong>tercera</strong> y la <strong>quinta</strong>.</p>
+      <div class="th-rule">
+        <strong>Fórmula:</strong> raíz → (intervalo) → tercera → (intervalo) → quinta<br>
+        Cambiar el tamaño de esos intervalos cambia la <em>calidad</em> de la tríada.
+      </div>
+      <table class="th-table">
+        <tr><th>Tipo</th><th>Intervalo 1</th><th>Intervalo 2</th><th>Ejemplo (Do)</th><th>Sonido</th></tr>
+        <tr><td>Mayor</td><td>4 semitonos</td><td>3 semitonos</td><td>Do – Mi – Sol</td><td><span class="tag tag-ok">brillante</span></td></tr>
+        <tr><td>Menor</td><td>3 semitonos</td><td>4 semitonos</td><td>Do – Mi♭ – Sol</td><td><span class="tag tag-acc">oscuro</span></td></tr>
+        <tr><td>Disminuida</td><td>3 semitonos</td><td>3 semitonos</td><td>Do – Mi♭ – Sol♭</td><td><span class="tag tag-warn">tenso</span></td></tr>
+        <tr><td>Aumentada</td><td>4 semitonos</td><td>4 semitonos</td><td>Do – Mi – Sol♯</td><td><span class="tag tag-red">flotante</span></td></tr>
+      </table>
+      <div class="th-rule">
+        <strong>Truco para recordar los intervalos:</strong><br>
+        Mayor = 4+3 &nbsp;·&nbsp; Menor = 3+4 &nbsp;·&nbsp; Disminuida = 3+3 &nbsp;·&nbsp; Aumentada = 4+4
+      </div>
+      <p class="th-p">En el piano: buscá la raíz y contá semitonos hacia arriba (teclas negras y blancas juntas). La diferencia entre mayor y menor es solo un semitono: bajar la tercera.</p>
+    </div>
+  </div>
+
+  <!-- ACORDES DIATÓNICOS -->
+  <div class="th-block">
+    <div class="th-block-head">
+      <div class="th-dot" style="background:#6bc4e8"></div>
+      <div class="th-block-name">Acordes Diatónicos</div>
+    </div>
+    <div class="th-block-body">
+      <p class="th-p">Los acordes diatónicos son las tríadas formadas usando <strong>únicamente las notas de una escala mayor</strong>. Cada una de las 7 notas es raíz de un acorde, y su calidad queda fijada por la escala.</p>
+      <table class="th-table">
+        <tr><th>Grado</th><th>Símbolo</th><th>Calidad</th><th>En Do mayor</th><th>Función</th></tr>
+        <tr><td>I</td><td>I</td><td>Mayor</td><td>Do mayor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
+        <tr><td>II</td><td>ii</td><td>Menor</td><td>Re menor</td><td><span class="tag tag-acc">Subdominante</span></td></tr>
+        <tr><td>III</td><td>iii</td><td>Menor</td><td>Mi menor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
+        <tr><td>IV</td><td>IV</td><td>Mayor</td><td>Fa mayor</td><td><span class="tag tag-acc">Subdominante</span></td></tr>
+        <tr><td>V</td><td>V</td><td>Mayor</td><td>Sol mayor</td><td><span class="tag tag-warn">Dominante</span></td></tr>
+        <tr><td>VI</td><td>vi</td><td>Menor</td><td>La menor</td><td><span class="tag tag-ok">Tónica</span></td></tr>
+        <tr><td>VII</td><td>VII°</td><td>Disminuida</td><td>Si disminuida</td><td><span class="tag tag-warn">Dominante</span></td></tr>
+      </table>
+      <div class="th-rule">
+        <strong>Regla de oro:</strong> el patrón M m m M M m d° es igual en <em>todas</em> las tonalidades mayores. Solo cambian los nombres de las notas, nunca las calidades.
+      </div>
+      <p class="th-p"><strong>Mayúscula = mayor, minúscula = menor.</strong> Las tres funciones explican la lógica del movimiento armónico:</p>
+      <div class="th-rule">
+        <strong>Tónica</strong> (I, iii, vi) — reposo, hogar, estabilidad. Donde todo comienza y termina.<br>
+        <strong>Subdominante</strong> (ii, IV) — tensión suave. Aleja la música del reposo.<br>
+        <strong>Dominante</strong> (V, VII°) — tensión fuerte. Quiere resolver al I con urgencia.
+      </div>
+    </div>
+  </div>
+
+  <!-- SÉPTIMAS -->
+  <div class="th-block">
+    <div class="th-block-head">
+      <div class="th-dot" style="background:#5bbfab"></div>
+      <div class="th-block-name">Acordes de 7ª</div>
+    </div>
+    <div class="th-block-body">
+      <p class="th-p">Se obtiene agregando una <strong>cuarta nota</strong> por encima de la quinta: la séptima de la raíz. Hay 4 tipos que aparecen de forma natural en la escala mayor:</p>
+      <table class="th-table">
+        <tr><th>Grado</th><th>Tipo</th><th>Símbolo</th><th>En Do mayor</th></tr>
+        <tr><td>I</td><td>Mayor con 7ª mayor</td><td>Δ7 / Maj7</td><td>Do – Mi – Sol – Si</td></tr>
+        <tr><td>ii</td><td>Menor con 7ª menor</td><td>m7</td><td>Re – Fa – La – Do</td></tr>
+        <tr><td>iii</td><td>Menor con 7ª menor</td><td>m7</td><td>Mi – Sol – Si – Re</td></tr>
+        <tr><td>IV</td><td>Mayor con 7ª mayor</td><td>Δ7 / Maj7</td><td>Fa – La – Do – Mi</td></tr>
+        <tr><td>V</td><td>Dominante</td><td>7</td><td>Sol – Si – Re – Fa</td></tr>
+        <tr><td>vi</td><td>Menor con 7ª menor</td><td>m7</td><td>La – Do – Mi – Sol</td></tr>
+        <tr><td>VII°</td><td>Semidisminuido</td><td>ø7 / m7♭5</td><td>Si – Re – Fa – La</td></tr>
+      </table>
+      <div class="th-rule">
+        <strong>El V7 (dominante) es el más importante:</strong> el intervalo de tritono entre su 3ª (Si) y su 7ª (Fa) genera la tensión más poderosa de la armonía tonal. Siempre quiere resolver al I.<br><br>
+        En jazz todos los acordes suelen ser de 7ª. En pop y clásico, el V7 es el más frecuente.
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESIONES -->
+  <div class="th-block">
+    <div class="th-block-head">
+      <div class="th-dot" style="background:#e86868"></div>
+      <div class="th-block-name">Progresiones</div>
+    </div>
+    <div class="th-block-body">
+      <p class="th-p">Una progresión es una <strong>secuencia de acordes</strong> con lógica de tensión y resolución. El movimiento fundamental es simple: salir del reposo, crear tensión y volver a casa.</p>
+      <div class="th-rule">
+        <strong>El arco básico:</strong> Tónica → Subdominante → Dominante → Tónica<br>
+        En cifrado romano: <em>I → IV → V → I</em>
+      </div>
+      <table class="th-table">
+        <tr><th>Progresión</th><th>En Do mayor</th><th>Se escucha en</th></tr>
+        <tr><td>I – IV – V – I</td><td>Do – Fa – Sol – Do</td><td>Blues, rock, folk</td></tr>
+        <tr><td>I – V – vi – IV</td><td>Do – Sol – La m – Fa</td><td>Pop moderno (miles de canciones)</td></tr>
+        <tr><td>ii – V – I</td><td>Re m – Sol – Do</td><td>Jazz: la progresión fundamental</td></tr>
+        <tr><td>I – vi – IV – V</td><td>Do – La m – Fa – Sol</td><td>Rock and roll, los 50s</td></tr>
+        <tr><td>vi – IV – I – V</td><td>La m – Fa – Do – Sol</td><td>Baladas pop, variante del anterior</td></tr>
+        <tr><td>iii – vi – ii – V</td><td>Mi m – La m – Re m – Sol</td><td>Jazz: turnaround clásico</td></tr>
+        <tr><td>IV – V – I</td><td>Fa – Sol – Do</td><td>Cadencia final, muy común</td></tr>
+        <tr><td>I – iii – IV – V</td><td>Do – Mi m – Fa – Sol</td><td>Rock, música cinematográfica</td></tr>
+      </table>
+      <div class="th-rule">
+        <strong>Por dónde empezar:</strong> aprendé <em>ii–V–I en Do mayor</em> de memoria. Es la progresión más estudiada en armonía y aparece en prácticamente todo el jazz. Una vez que la tenés clara, transponela tonalidad por tonalidad.
+      </div>
+      <p class="th-p">Cuando practiques las flashcards, intentá <strong>tocar la progresión en el piano</strong> al mismo tiempo. Conectar lo visual con lo auditivo es lo que fija el conocimiento.</p>
+    </div>
+  </div>
+
+  <button class="start-btn" onclick="showScreen('settings')" style="margin-top:8px">← Volver a practicar</button>
 </div>
 
 </div>
