@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoría Musical — Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07070f;--card:#111120;
+  --txt:#f0ebe0;--txt-dim:rgba(240,235,224,.5);--txt-mute:rgba(240,235,224,.28);
+  --bdr:rgba(255,255,255,.07);
+}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:'JetBrains Mono',monospace}
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;position:relative;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(180deg,transparent 0,transparent 37px,rgba(255,255,255,.02) 37px,rgba(255,255,255,.02) 38px);pointer-events:none}
+body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 35%,rgba(0,0,0,.6) 100%);pointer-events:none}
+
+.wrap{position:relative;z-index:1;width:100%;max-width:560px;text-align:center}
+
+.title{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:900;letter-spacing:-.02em;margin-bottom:8px}
+.title span{font-style:italic}
+.sub{font-size:.72rem;text-transform:uppercase;letter-spacing:.15em;color:var(--txt-dim);margin-bottom:52px}
+
+.tools{display:grid;gap:14px}
+.tool-card{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:26px 24px;text-decoration:none;color:inherit;display:flex;align-items:center;gap:20px;transition:all .18s;position:relative;overflow:hidden;text-align:left}
+.tool-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.tool-card:hover{border-color:var(--c);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.tool-icon{font-size:2rem;flex-shrink:0;line-height:1}
+.tool-name{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:5px}
+.tool-desc{font-size:.73rem;color:var(--txt-dim);line-height:1.6}
+.tool-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.tag{font-size:.6rem;padding:2px 8px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--txt-mute)}
+.arrow{margin-left:auto;font-size:1.1rem;color:var(--txt-mute);flex-shrink:0;transition:transform .18s}
+.tool-card:hover .arrow{transform:translateX(4px);color:var(--c)}
+
+.footer{margin-top:40px;font-size:.65rem;color:var(--txt-mute);letter-spacing:.08em}
+
+@media(max-width:480px){.title{font-size:2rem}.tool-card{padding:18px 16px}.tool-icon{font-size:1.6rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1 class="title">Teoría <span>Musical</span></h1>
+  <p class="sub">Flashcards para piano</p>
+
+  <div class="tools">
+    <a class="tool-card" href="flashcards_escala.html" style="--c:#d4a843">
+      <div class="tool-icon">🎼</div>
+      <div>
+        <div class="tool-name">Grados de Escala</div>
+        <div class="tool-desc">Identificá rápidamente cualquier grado en cualquier escala. Mayor, menor, modos griegos.</div>
+        <div class="tool-tags">
+          <span class="tag">Mayor</span>
+          <span class="tag">Menor</span>
+          <span class="tag">Modos</span>
+          <span class="tag">12 tonalidades</span>
+        </div>
+      </div>
+      <div class="arrow">→</div>
+    </a>
+
+    <a class="tool-card" href="armonia.html" style="--c:#7c6fe8">
+      <div class="tool-icon">🎹</div>
+      <div>
+        <div class="tool-name">Armonía</div>
+        <div class="tool-desc">Tríadas, acordes diatónicos, séptimas y progresiones. Con sección de teoría desde cero.</div>
+        <div class="tool-tags">
+          <span class="tag">Tríadas</span>
+          <span class="tag">Diatónico</span>
+          <span class="tag">Séptimas</span>
+          <span class="tag">Progresiones</span>
+        </div>
+      </div>
+      <div class="arrow">→</div>
+    </a>
+  </div>
+
+  <p class="footer">Teclado: 1–4 para responder · Enter para siguiente</p>
+</div>
+</body>
+</html>
